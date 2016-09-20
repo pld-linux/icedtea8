@@ -18,15 +18,15 @@
 %bcond_without sunec	# enable Sun EC crypt lib
 
 %if %{with bootstrap}
-%define		use_jdk	openjdk7
+%define		use_jdk	openjdk8
 %else
 %define		use_jdk	icedtea8
 %endif
 
 # class data version seen with file(1) that this jvm is able to load
-%define		_classdataversion 51.0
+%define		_classdataversion 52.0
 # JDK/JRE version, as returned with `java -version`, '_' replaced with '.'
-%define		_jdkversion 1.7.0.85
+%define		_jdkversion 1.8.0.101
 
 Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
@@ -37,20 +37,22 @@ License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	http://icedtea.wildebeest.org/download/source/icedtea-%{version}.tar.gz
 # Source0-md5:	7b54dacd18f3adc0d77008d15db2b5c6
-Source1:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/openjdk.tar.bz2
-# Source1-md5:	457590e39a27894c3e0b95fb38e46703
-Source2:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/corba.tar.bz2
-# Source2-md5:	a60e2e11756d814c0b6279a7c09f2fe4
-Source3:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxp.tar.bz2
-# Source3-md5:	4e2604404efa37ba94bc906391ab40b3
-Source4:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxws.tar.bz2
-# Source4-md5:	6b67facacec9c1f0ffe40f42b55f40bc
-Source5:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jdk.tar.bz2
-# Source5-md5:	8635363b90b5d5ef36efe0ab462f7f54
-Source6:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/langtools.tar.bz2
-# Source6-md5:	24ba6a4cea0108dbbdf64731cebbbb20
-Source7:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/hotspot.tar.bz2
-# Source7-md5:	b9a09fa5869aa9ece5650a62c933f64a
+Source1:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/openjdk.tar.xz
+# Source1-md5:	1b9b9e9102abfc387acb4d244580fb9a
+Source2:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/corba.tar.xz
+# Source2-md5:	d697eb0b8df5ee5242768be1678f1684
+Source3:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxp.tar.xz
+# Source3-md5:	a3cbe28e27ebff38c8475ecae56ad446
+Source4:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxws.tar.xz
+# Source4-md5:	92da27a8622b92ee60ca67452f695927
+Source5:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jdk.tar.xz
+# Source5-md5:	e2143b152be03f3ec66313294606c100
+Source6:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/langtools.tar.xz
+# Source6-md5:	39c75541d8bbe9be9cfd7f58c0950641
+Source7:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/hotspot.tar.xz
+# Source7-md5:	d4d70521fee922201c309a64be22b239
+Source8:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/nashorn.tar.xz
+# Source8-md5:	3c266698f3b192fd5616ce9548d1ead2
 Source10:	make-cacerts.sh
 # 0-99 patches for the IcedTea files
 Patch0:		%{name}-x32-ac.patch
@@ -80,19 +82,25 @@ BuildRequires:	lcms2-devel
 BuildRequires:	libffi-devel
 # for /usr/share/java/ecj.jar:
 BuildRequires:	libgcj
-BuildRequires:	libjpeg-devel
+BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	pcsc-lite-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libsctp-devel
 BuildRequires:	libstdc++-static
 BuildRequires:	lsb-release
 %{?with_nss:BuildRequires:	nss-devel >= 1:3.17.2-5}
+BuildRequires:	paxctl
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.557
 BuildRequires:	systemtap-sdt-devel
 BuildRequires:	unzip
 BuildRequires:	util-linux
 BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	xorg-lib-libXau-devel
+BuildRequires:	xorg-lib-libXcomposite-devel
+BuildRequires:	xorg-lib-libXdmcp-devel
+BuildRequires:	xorg-lib-libXext-devel
+BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xorg-lib-libXinerama-devel
 BuildRequires:	xorg-lib-libXp-devel
 BuildRequires:	xorg-lib-libXrender-devel
@@ -107,6 +115,7 @@ Requires:	%{name}-jdk = %{version}-%{release}
 Suggests:	%{name}-jre-X11
 Suggests:	icedtea-web
 Obsoletes:	icedtea6
+Obsoletes:	icedtea7
 Obsoletes:	java5-sun
 Obsoletes:	java5-sun-jre
 Obsoletes:	java5-sun-jre-jdbc
@@ -121,6 +130,7 @@ Obsoletes:	java-sun-jre-alsa
 Obsoletes:	java-sun-jre-jdbc
 Obsoletes:	java-sun-jre-X11
 Obsoletes:	java-sun-tools
+Obsoletes:	openjdk8
 Obsoletes:	oracle-java7
 Obsoletes:	oracle-java7-jre
 Obsoletes:	oracle-java7-jre-alsa
@@ -180,10 +190,12 @@ Provides:	jdk = %{_jdkversion}
 Obsoletes:	blackdown-java-sdk
 Obsoletes:	ibm-java
 Obsoletes:	icedtea6-jdk
+Obsoletes:	icedtea7-jdk
 Obsoletes:	java-blackdown
 Obsoletes:	java-gcj-compat-devel
 Obsoletes:	java-sun
 Obsoletes:	java5-sun
+Obsoletes:	openjdk8-jdk
 Obsoletes:	oracle-java7
 Obsoletes:	jdk
 Obsoletes:	kaffe
@@ -236,6 +248,7 @@ Provides:	java(jsse) = %{version}
 Provides:	java1.4
 Provides:	jre = %{_jdkversion}
 Obsoletes:	icedtea6-jre
+Obsoletes:	icedtea7-jre
 Obsoletes:	java(jaas)
 Obsoletes:	java(jaf)
 Obsoletes:	java(jaxp)
@@ -248,6 +261,7 @@ Obsoletes:	java(jsse)
 Obsoletes:	java-gcj-compat
 Obsoletes:	java-sun-jre
 Obsoletes:	java5-sun-jre
+Obsoletes:	openjdk8-jre
 Obsoletes:	oracle-java7-jre
 Obsoletes:	jre
 
@@ -271,6 +285,7 @@ Requires:	%{name}-jre-base-X11 = %{version}-%{release}
 Provides:	jre-X11 = %{_jdkversion}
 Obsoletes:	icedtea6-jre-X11
 Obsoletes:	java-sun-jre-X11
+Obsoletes:	openjdk8-jre-X11
 Obsoletes:	oracle-java7-jre-X11
 
 %description jre-X11
@@ -358,6 +373,8 @@ Requires:	%{name}-jdk-base = %{version}-%{release}
 Provides:	jar
 Obsoletes:	fastjar
 Obsoletes:	icedtea6-jar
+Obsoletes:	icedtea7-jar
+Obsoletes:	openjdk8-jar
 Obsoletes:	jar
 
 %description jar
@@ -380,7 +397,9 @@ Group:		Development/Languages/Java
 Requires:	%{name}-jdk-base = %{version}-%{release}
 Requires:	%{name}-jre-X11 = %{version}-%{release}
 Obsoletes:	icedtea6-appletviewer
+Obsoletes:	icedtea7-appletviewer
 Obsoletes:	java-sun-appletviewer
+Obsoletes:	openjdk8-appletviewer
 Obsoletes:	oracle-java7-appletviewer
 
 %description appletviewer
@@ -433,13 +452,14 @@ cp -p %{PATCH101} pld-patches
 
 # let the build system extract the sources where it wants them
 install -d drops
-ln -s %{SOURCE1} openjdk.tar.bz2
-ln -s %{SOURCE2} corba.tar.bz2
-ln -s %{SOURCE3} jaxp.tar.bz2
-ln -s %{SOURCE4} jaxws.tar.bz2
-ln -s %{SOURCE5} jdk.tar.bz2
-ln -s %{SOURCE6} langtools.tar.bz2
-ln -s %{SOURCE7} hotspot.tar.bz2
+ln -s %{SOURCE1} openjdk.tar.xz
+ln -s %{SOURCE2} corba.tar.xz
+ln -s %{SOURCE3} jaxp.tar.xz
+ln -s %{SOURCE4} jaxws.tar.xz
+ln -s %{SOURCE5} jdk.tar.xz
+ln -s %{SOURCE6} langtools.tar.xz
+ln -s %{SOURCE7} hotspot.tar.xz
+ln -s %{SOURCE8} nashorn.tar.tar.xz
 
 %build
 # Make sure we have /proc mounted - otherwise idlc will fail later.
@@ -490,27 +510,33 @@ chmod a+x build-bin/ant
 	SHELL=/bin/bash \
 	DISTRIBUTION_PATCHES="$(echo pld-patches/*.patch)"
 
-# if dpkg-architecure is installed (like on carme) it will break the build
-# unless we disable using it somehow. As patching is difficult here:
-%{__sed} -i -e's/dpkg-architecture/dpkg-architecture__/' openjdk/*/make/common/shared/Platform.gmk
-
-%{__make} -j1 \
+%{__make} -j1 icedtea \
 	SHELL=/bin/bash \
 	DISABLE_HOTSPOT_OS_VERSION_CHECK=ok \
 	DISTRIBUTION_PATCHES="$(echo pld-patches/*.patch)" \
 	PRINTF=/bin/printf \
 	MAX_VM_MEMORY=1024
 
+# smoke test
+openjdk.build/jdk/bin/java -version
+
 %{?with_cacerts:%{__sh} %{SOURCE10}}
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 install -d $RPM_BUILD_ROOT{%{_bindir},%{dstdir},%{_mandir}/ja} \
 	$RPM_BUILD_ROOT{%{jvmjardir},%{_examplesdir}/%{name}-%{version},%{_javasrcdir}} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 
+#%{__make} -j1 install \
+#	DESTDIR=$RPM_BUILD_ROOT \
+#	SHELL=/bin/bash \
+#	PRINTF=/bin/printf \
+#	MAX_VM_MEMORY=1024
+
 # install the 'JDK image', it contains the JRE too
-cp -a openjdk.build/j2sdk-image/* $RPM_BUILD_ROOT%{dstdir}
+cp -a openjdk.build/images/j2sdk-image/* $RPM_BUILD_ROOT%{dstdir}
 
 # convenience symlinks without version number
 ln -s %{dstreldir} $RPM_BUILD_ROOT%{_jvmdir}/%{name}
@@ -563,9 +589,6 @@ done
 # some apps (like opera) looks for it in different place
 ln -s server/libjvm.so $RPM_BUILD_ROOT%{jredir}/lib/%{jre_arch}/libjvm.so
 
-# uses /usr/share/javazi if present and we require that package
-%{__rm} -r $RPM_BUILD_ROOT%{jredir}/lib/zi
-
 %{__rm} $RPM_BUILD_ROOT%{dstdir}/{,jre/}{ASSEMBLY_EXCEPTION,LICENSE,THIRD_PARTY_README}
 
 %{?with_cacerts:install cacerts $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/security}
@@ -579,7 +602,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files jdk
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/apt
 %attr(755,root,root) %{_bindir}/extcheck
 %attr(755,root,root) %{_bindir}/idlj
 %attr(755,root,root) %{_bindir}/jarsigner
@@ -591,8 +613,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/jcmd
 %attr(755,root,root) %{_bindir}/jconsole
 %attr(755,root,root) %{_bindir}/jdb
+%attr(755,root,root) %{_bindir}/jdeps
 %attr(755,root,root) %{_bindir}/jhat
 %attr(755,root,root) %{_bindir}/jinfo
+%attr(755,root,root) %{_bindir}/jjs
 %attr(755,root,root) %{_bindir}/jmap
 %attr(755,root,root) %{_bindir}/jps
 %attr(755,root,root) %{_bindir}/jrunscript
@@ -608,7 +632,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/wsimport
 %attr(755,root,root) %{_bindir}/xjc
 %{_jvmdir}/java
-%{_mandir}/man1/apt.1*
 %{_mandir}/man1/extcheck.1*
 %{_mandir}/man1/idlj.1*
 %{_mandir}/man1/jarsigner.1*
@@ -619,8 +642,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/jcmd.1*
 %{_mandir}/man1/jconsole.1*
 %{_mandir}/man1/jdb.1*
+%{_mandir}/man1/jdeps.1*
 %{_mandir}/man1/jhat.1*
 %{_mandir}/man1/jinfo.1*
+%{_mandir}/man1/jjs.1*
 %{_mandir}/man1/jmap.1*
 %{_mandir}/man1/jps.1*
 %{_mandir}/man1/jrunscript.1*
@@ -635,7 +660,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/wsgen.1*
 %{_mandir}/man1/wsimport.1*
 %{_mandir}/man1/xjc.1*
-%lang(ja) %{_mandir}/ja/man1/apt.1*
 %lang(ja) %{_mandir}/ja/man1/extcheck.1*
 %lang(ja) %{_mandir}/ja/man1/idlj.1*
 %lang(ja) %{_mandir}/ja/man1/jarsigner.1*
@@ -646,8 +670,10 @@ rm -rf $RPM_BUILD_ROOT
 %lang(ja) %{_mandir}/ja/man1/jcmd.1*
 %lang(ja) %{_mandir}/ja/man1/jconsole.1*
 %lang(ja) %{_mandir}/ja/man1/jdb.1*
+%lang(ja) %{_mandir}/ja/man1/jdeps.1*
 %lang(ja) %{_mandir}/ja/man1/jhat.1*
 %lang(ja) %{_mandir}/ja/man1/jinfo.1*
+%lang(ja) %{_mandir}/ja/man1/jjs.1*
 %lang(ja) %{_mandir}/ja/man1/jmap.1*
 %lang(ja) %{_mandir}/ja/man1/jps.1*
 %lang(ja) %{_mandir}/ja/man1/jrunscript.1*
@@ -665,12 +691,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files jdk-base
 %defattr(644,root,root,755)
-%doc openjdk.build/j2sdk-image/THIRD_PARTY_README
-%doc openjdk.build/j2sdk-image/ASSEMBLY_EXCEPTION
+%doc openjdk.build/images/j2sdk-image/THIRD_PARTY_README
+%doc openjdk.build/images/j2sdk-image/ASSEMBLY_EXCEPTION
 %dir %{dstdir}
 %{_jvmdir}/%{name}
+%dir %{dstdir}/bin
 %attr(755,root,root) %{dstdir}/bin/appletviewer
-%attr(755,root,root) %{dstdir}/bin/apt
 %attr(755,root,root) %{dstdir}/bin/extcheck
 %attr(755,root,root) %{dstdir}/bin/idlj
 %attr(755,root,root) %{dstdir}/bin/jar
@@ -683,6 +709,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{dstdir}/bin/jconsole
 %attr(755,root,root) %{dstdir}/bin/jcmd
 %attr(755,root,root) %{dstdir}/bin/jdb
+%attr(755,root,root) %{dstdir}/bin/jdeps
 %attr(755,root,root) %{dstdir}/bin/jhat
 %attr(755,root,root) %{dstdir}/bin/jinfo
 %attr(755,root,root) %{dstdir}/bin/jmap
@@ -714,6 +741,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{dstdir}/lib/%{jre_arch}
 %dir %{dstdir}/lib/%{jre_arch}/jli
 %attr(755,root,root) %{dstdir}/lib/%{jre_arch}/jli/*.so
+%attr(755,root,root) %{dstdir}/lib/%{jre_arch}/libjawt.so
 %{dstdir}/tapset
 
 %files jre
@@ -748,8 +776,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files jre-base
 %defattr(644,root,root,755)
-%doc openjdk.build/j2sdk-image/THIRD_PARTY_README
-%doc openjdk.build/j2sdk-image/ASSEMBLY_EXCEPTION
+%doc openjdk.build/images/j2sdk-image/THIRD_PARTY_README
+%doc openjdk.build/images/j2sdk-image/ASSEMBLY_EXCEPTION
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*
 %dir %{dstdir}
@@ -760,6 +788,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{dstdir}/bin
 %attr(755,root,root) %{jredir}/bin/java
 %attr(755,root,root) %{dstdir}/bin/java
+%attr(755,root,root) %{jredir}/bin/jjs
+%attr(755,root,root) %{dstdir}/bin/jjs
 %attr(755,root,root) %{jredir}/bin/keytool
 %attr(755,root,root) %{dstdir}/bin/keytool
 %attr(755,root,root) %{jredir}/bin/orbd
@@ -786,31 +816,25 @@ rm -rf $RPM_BUILD_ROOT
 %{jredir}/lib/%{jre_arch}/client/Xusage.txt
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/client/*.so
 %endif
-%dir %{jredir}/lib/%{jre_arch}/headless
-%attr(755,root,root) %{jredir}/lib/%{jre_arch}/headless/*.so
 %dir %{jredir}/lib/%{jre_arch}/jli
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/jli/*.so
 %dir %{jredir}/lib/%{jre_arch}/server
 %{jredir}/lib/%{jre_arch}/server/Xusage.txt
-%ifnarch x32
-%{jredir}/lib/%{jre_arch}/server/classes.jsa
-%endif
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/server/*.so
 %{jredir}/lib/%{jre_arch}/jvm.cfg
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libattach.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libawt.so
+%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libawt_headless.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libdt_socket.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libhprof.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libinstrument.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libj2gss.so
-%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libj2krb5.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libj2pcsc.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libj2pkcs11.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjaas_unix.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjava.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjavajpeg.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjavalcms.so
-%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjavasctp.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjava_crw_demo.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjawt.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjdwp.so
@@ -826,6 +850,7 @@ rm -rf $RPM_BUILD_ROOT
 %ifnarch x32
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsaproc.so
 %endif
+%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsctp.so
 %{?with_sunec:%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsunec.so}
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libunpack.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libverify.so
@@ -833,6 +858,8 @@ rm -rf $RPM_BUILD_ROOT
 %{jredir}/lib/images
 %{jredir}/lib/management
 %{jredir}/lib/security
+%{jredir}/lib/hijrah-config-umalqura.properties
+%{jredir}/lib/tzdb.dat
 
 %if %{with webstart}
 %{jredir}/lib/about.jar
@@ -844,7 +871,6 @@ rm -rf $RPM_BUILD_ROOT
 %{jredir}/lib/content-types.properties
 %{jredir}/lib/currency.data
 %{jredir}/lib/flavormap.properties
-%{jredir}/lib/fontconfig.*
 %{jredir}/lib/jce.jar
 %attr(755, root, root) %{jredir}/lib/jexec
 %{jredir}/lib/jsse.jar
@@ -856,10 +882,8 @@ rm -rf $RPM_BUILD_ROOT
 %{jredir}/lib/psfont.properties.ja
 %{jredir}/lib/psfontj2d.properties
 %{jredir}/lib/resources.jar
-%{jredir}/lib/rhino.jar
 %{jredir}/lib/rt.jar
 %{jredir}/lib/sound.properties
-%{jredir}/lib/tz.properties
 %{jvmjardir}
 
 %files jre-X11
@@ -872,8 +896,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{jredir}/bin/policytool
 %attr(755,root,root) %{dstdir}/bin/policytool
-%dir %{jredir}/lib/%{jre_arch}/xawt
-%attr(755,root,root) %{jredir}/lib/%{jre_arch}/xawt/*.so
+%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libawt_xawt.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsplashscreen.so
 
 %files jre-base-alsa
@@ -886,7 +909,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files jre-base-gtk
 %defattr(644,root,root,755)
-%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjavagtk.so
 
 %files jar
 %defattr(644,root,root,755)

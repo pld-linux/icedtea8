@@ -1,9 +1,10 @@
---- openjdk/hotspot/src/os/linux/vm/os_linux.cpp~	2015-06-12 17:09:45.000000000 +0200
-+++ openjdk/hotspot/src/os/linux/vm/os_linux.cpp	2015-07-28 10:30:57.000000000 +0200
-@@ -410,9 +410,9 @@
-  *        7: The default directories, normally /lib and /usr/lib.
-  */
- #if defined(AMD64) || defined(_LP64) && (defined(SPARC) || defined(PPC) || defined(S390) || defined(AARCH64)) || defined(BUILTIN_SIM)
+diff -dur -x '*~' -x '*.orig' -x '*.rej' openjdk.orig/hotspot/src/os/linux/vm/os_linux.cpp openjdk/hotspot/src/os/linux/vm/os_linux.cpp
+--- openjdk.orig/hotspot/src/os/linux/vm/os_linux.cpp	2016-07-25 07:38:24.000000000 +0200
++++ openjdk/hotspot/src/os/linux/vm/os_linux.cpp	2016-09-20 09:17:58.000000000 +0200
+@@ -309,9 +309,9 @@
+ //        ...
+ //        7: The default directories, normally /lib and /usr/lib.
+ #if defined(AMD64) || defined(_LP64) && (defined(SPARC) || defined(PPC) || defined(S390)) || defined(BUILTIN_SIM)
 -#define DEFAULT_LIBPATH "/usr/lib64:/lib64:/lib:/usr/lib"
 +#define DEFAULT_LIBPATH "/usr/lib64/java:/usr/lib64:/lib64:/lib:/usr/lib"
  #else
@@ -11,4 +12,4 @@
 +#define DEFAULT_LIBPATH "/usr/lib/java:/lib:/usr/lib"
  #endif
  
- #define EXTENSIONS_DIR  "/lib/ext"
+ // Base path of extensions installed on the system.
