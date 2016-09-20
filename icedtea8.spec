@@ -18,9 +18,9 @@
 %bcond_without sunec	# enable Sun EC crypt lib
 
 %if %{with bootstrap}
-%define		use_jdk	icedtea6
+%define		use_jdk	openjdk7
 %else
-%define		use_jdk	icedtea7
+%define		use_jdk	icedtea8
 %endif
 
 # class data version seen with file(1) that this jvm is able to load
@@ -30,26 +30,26 @@
 
 Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
-Name:		icedtea7
-Version:	2.6.6
-Release:	1
+Name:		icedtea8
+Version:	3.1.0
+Release:	0.1
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	http://icedtea.wildebeest.org/download/source/icedtea-%{version}.tar.gz
-# Source0-md5:	a688ccbc949c983016ebbc763e7bb1c0
-Source1:	http://icedtea.wildebeest.org/download/drops/icedtea7/%{version}/openjdk.tar.bz2
+# Source0-md5:	7b54dacd18f3adc0d77008d15db2b5c6
+Source1:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/openjdk.tar.bz2
 # Source1-md5:	457590e39a27894c3e0b95fb38e46703
-Source2:	http://icedtea.wildebeest.org/download/drops/icedtea7/%{version}/corba.tar.bz2
+Source2:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/corba.tar.bz2
 # Source2-md5:	a60e2e11756d814c0b6279a7c09f2fe4
-Source3:	http://icedtea.wildebeest.org/download/drops/icedtea7/%{version}/jaxp.tar.bz2
+Source3:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxp.tar.bz2
 # Source3-md5:	4e2604404efa37ba94bc906391ab40b3
-Source4:	http://icedtea.wildebeest.org/download/drops/icedtea7/%{version}/jaxws.tar.bz2
+Source4:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxws.tar.bz2
 # Source4-md5:	6b67facacec9c1f0ffe40f42b55f40bc
-Source5:	http://icedtea.wildebeest.org/download/drops/icedtea7/%{version}/jdk.tar.bz2
+Source5:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jdk.tar.bz2
 # Source5-md5:	8635363b90b5d5ef36efe0ab462f7f54
-Source6:	http://icedtea.wildebeest.org/download/drops/icedtea7/%{version}/langtools.tar.bz2
+Source6:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/langtools.tar.bz2
 # Source6-md5:	24ba6a4cea0108dbbdf64731cebbbb20
-Source7:	http://icedtea.wildebeest.org/download/drops/icedtea7/%{version}/hotspot.tar.bz2
+Source7:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/hotspot.tar.bz2
 # Source7-md5:	b9a09fa5869aa9ece5650a62c933f64a
 Source10:	make-cacerts.sh
 # 0-99 patches for the IcedTea files
