@@ -500,11 +500,9 @@ chmod a+x build-bin/ant
 %endif
 	--disable-downloading \
 	--with-jdk-home=%{java_home} \
-	--with-abs-install-dir=%{dstdir} \
 	--disable-bootstrap \
 	--%{!?with_nss:dis}%{?with_nss:en}able-nss \
-	--%{!?with_sunec:dis}%{?with_sunec:en}able-sunec \
-	--with-rhino=%{_javadir}/js.jar
+	--%{!?with_sunec:dis}%{?with_sunec:en}able-sunec
 
 %{__make} extract \
 	SHELL=/bin/bash \
