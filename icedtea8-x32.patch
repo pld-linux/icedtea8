@@ -1,12 +1,12 @@
-diff -dur -x '*~' -x '*.orig' -x '*.rej' openjdk.orig/common/autoconf/platform.m4 openjdk/common/autoconf/platform.m4
+diff -dur -x '*~' openjdk.orig/common/autoconf/platform.m4 openjdk/common/autoconf/platform.m4
 --- openjdk.orig/common/autoconf/platform.m4	2016-07-25 07:38:20.000000000 +0200
-+++ openjdk/common/autoconf/platform.m4	2016-09-20 09:21:06.000000000 +0200
++++ openjdk/common/autoconf/platform.m4	2016-09-20 13:41:45.072136115 +0200
 @@ -36,6 +36,12 @@
        VAR_CPU_BITS=64
        VAR_CPU_ENDIAN=little
        ;;
 +    x32)
-+      VAR_CPU=x86_64
++      VAR_CPU=x32
 +      VAR_CPU_ARCH=x86
 +      VAR_CPU_BITS=32
 +      VAR_CPU_ENDIAN=little
@@ -14,9 +14,49 @@ diff -dur -x '*~' -x '*.orig' -x '*.rej' openjdk.orig/common/autoconf/platform.m
      i?86)
        VAR_CPU=x86
        VAR_CPU_ARCH=x86
-diff -dur -x '*~' -x '*.orig' -x '*.rej' openjdk.orig/hotspot/src/os/linux/vm/os_linux.cpp openjdk/hotspot/src/os/linux/vm/os_linux.cpp
---- openjdk.orig/hotspot/src/os/linux/vm/os_linux.cpp	2016-09-20 09:17:58.000000000 +0200
-+++ openjdk/hotspot/src/os/linux/vm/os_linux.cpp	2016-09-20 09:19:16.000000000 +0200
+@@ -168,7 +174,7 @@
+ 
+   # Convert the autoconf OS/CPU value to our own data, into the VAR_OS/CPU variables.
+   PLATFORM_EXTRACT_VARS_FROM_OS($build_os)
+-  PLATFORM_EXTRACT_VARS_FROM_CPU($build_cpu)
++  PLATFORM_EXTRACT_VARS_FROM_CPU(x32)
+   # ..and setup our own variables. (Do this explicitely to facilitate searching)
+   OPENJDK_BUILD_OS="$VAR_OS"
+   OPENJDK_BUILD_OS_API="$VAR_OS_API"
+@@ -193,7 +199,7 @@
+ 
+   # Convert the autoconf OS/CPU value to our own data, into the VAR_OS/CPU variables.
+   PLATFORM_EXTRACT_VARS_FROM_OS($host_os)
+-  PLATFORM_EXTRACT_VARS_FROM_CPU($host_cpu)
++  PLATFORM_EXTRACT_VARS_FROM_CPU(x32)
+   # ... and setup our own variables. (Do this explicitely to facilitate searching)
+   OPENJDK_TARGET_OS="$VAR_OS"
+   OPENJDK_TARGET_OS_API="$VAR_OS_API"
+@@ -383,6 +389,7 @@
+     ppc64)   ZERO_ARCHDEF=PPC64 ;;
+     s390*)   ZERO_ARCHDEF=S390  ;;
+     sparc*)  ZERO_ARCHDEF=SPARC ;;
++    x32*)    ZERO_ARCHDEF=X32 ;;
+     x86_64*) ZERO_ARCHDEF=AMD64 ;;
+     x86)     ZERO_ARCHDEF=IA32  ;;
+     *)      ZERO_ARCHDEF=$(echo "${OPENJDK_TARGET_CPU_LEGACY_LIB}" | tr a-z A-Z)
+diff -dur -x '*~' openjdk.orig/common/autoconf/toolchain.m4 openjdk/common/autoconf/toolchain.m4
+--- openjdk.orig/common/autoconf/toolchain.m4	2016-07-25 07:38:20.000000000 +0200
++++ openjdk/common/autoconf/toolchain.m4	2016-09-20 13:40:24.311262883 +0200
+@@ -1026,6 +1026,10 @@
+         ppc )
+           # on ppc we don't prevent gcc to omit frame pointer nor strict-aliasing
+           ;;
++        x32 )
++          COMMON_CCXXFLAGS_JDK="$COMMON_CCXXFLAGS_JDK -fno-omit-frame-pointer -DX32"
++          CFLAGS_JDK="${CFLAGS_JDK} -fno-strict-aliasing"
++          ;;
+         * )
+           COMMON_CCXXFLAGS_JDK="$COMMON_CCXXFLAGS_JDK -fno-omit-frame-pointer"
+           CFLAGS_JDK="${CFLAGS_JDK} -fno-strict-aliasing"
+diff -dur -x '*~' openjdk.orig/hotspot/src/os/linux/vm/os_linux.cpp openjdk/hotspot/src/os/linux/vm/os_linux.cpp
+--- openjdk.orig/hotspot/src/os/linux/vm/os_linux.cpp	2016-09-20 13:22:05.697032126 +0200
++++ openjdk/hotspot/src/os/linux/vm/os_linux.cpp	2016-09-20 13:40:24.314596390 +0200
 @@ -1911,7 +1911,7 @@
  
    #if  (defined IA32)
@@ -26,9 +66,9 @@ diff -dur -x '*~' -x '*.orig' -x '*.rej' openjdk.orig/hotspot/src/os/linux/vm/os
      static  Elf32_Half running_arch_code=EM_X86_64;
    #elif  (defined IA64)
      static  Elf32_Half running_arch_code=EM_IA_64;
-diff -dur -x '*~' -x '*.orig' -x '*.rej' openjdk.orig/hotspot/src/share/vm/utilities/taskqueue.hpp openjdk/hotspot/src/share/vm/utilities/taskqueue.hpp
+diff -dur -x '*~' openjdk.orig/hotspot/src/share/vm/utilities/taskqueue.hpp openjdk/hotspot/src/share/vm/utilities/taskqueue.hpp
 --- openjdk.orig/hotspot/src/share/vm/utilities/taskqueue.hpp	2016-07-25 07:38:24.000000000 +0200
-+++ openjdk/hotspot/src/share/vm/utilities/taskqueue.hpp	2016-09-20 09:22:34.000000000 +0200
++++ openjdk/hotspot/src/share/vm/utilities/taskqueue.hpp	2016-09-20 13:40:24.314596390 +0200
 @@ -400,7 +400,7 @@
    // Architectures with weak memory model require a barrier here
    // to guarantee that bottom is not older than age,
@@ -38,9 +78,9 @@ diff -dur -x '*~' -x '*.orig' -x '*.rej' openjdk.orig/hotspot/src/share/vm/utili
    OrderAccess::fence();
  #endif
    uint localBot = OrderAccess::load_acquire((volatile juint*)&_bottom);
-diff -dur -x '*~' -x '*.orig' -x '*.rej' openjdk.orig/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c openjdk/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c
+diff -dur -x '*~' openjdk.orig/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c openjdk/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c
 --- openjdk.orig/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c	2016-07-25 07:38:26.000000000 +0200
-+++ openjdk/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c	2016-09-20 09:19:37.000000000 +0200
++++ openjdk/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c	2016-09-20 13:40:24.314596390 +0200
 @@ -41,7 +41,6 @@
  #endif
  #ifdef __linux__
@@ -49,9 +89,9 @@ diff -dur -x '*~' -x '*.orig' -x '*.rej' openjdk.orig/jdk/src/solaris/native/jav
  #include <sys/utsname.h>
  #include <netinet/ip.h>
  
-diff -dur -x '*~' -x '*.orig' -x '*.rej' openjdk.orig/jdk/src/solaris/native/java/net/PlainSocketImpl.c openjdk/jdk/src/solaris/native/java/net/PlainSocketImpl.c
+diff -dur -x '*~' openjdk.orig/jdk/src/solaris/native/java/net/PlainSocketImpl.c openjdk/jdk/src/solaris/native/java/net/PlainSocketImpl.c
 --- openjdk.orig/jdk/src/solaris/native/java/net/PlainSocketImpl.c	2016-07-25 07:38:26.000000000 +0200
-+++ openjdk/jdk/src/solaris/native/java/net/PlainSocketImpl.c	2016-09-20 09:19:37.000000000 +0200
++++ openjdk/jdk/src/solaris/native/java/net/PlainSocketImpl.c	2016-09-20 13:40:24.314596390 +0200
 @@ -43,7 +43,6 @@
  #endif
  #ifdef __linux__

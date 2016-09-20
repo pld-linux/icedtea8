@@ -508,6 +508,17 @@ chmod a+x build-bin/ant
 	SHELL=/bin/bash \
 	DISTRIBUTION_PATCHES="$(echo pld-patches/*.patch)"
 
+%{__make} patch \
+	SHELL=/bin/bash \
+	DISTRIBUTION_PATCHES="$(echo pld-patches/*.patch)"
+
+# break here to prepare openjdk patches
+#exit 1
+
+cd openjdk/common/autoconf
+sh autogen.sh
+cd ../../..
+
 %{__make} -j1 icedtea \
 	SHELL=/bin/bash \
 	DISABLE_HOTSPOT_OS_VERSION_CHECK=ok \
@@ -526,12 +537,6 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{dstdir},%{_mandir}/ja} \
 	$RPM_BUILD_ROOT{%{jvmjardir},%{_examplesdir}/%{name}-%{version},%{_javasrcdir}} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
-
-#%{__make} -j1 install \
-#	DESTDIR=$RPM_BUILD_ROOT \
-#	SHELL=/bin/bash \
-#	PRINTF=/bin/printf \
-#	MAX_VM_MEMORY=1024
 
 # install the 'JDK image', it contains the JRE too
 cp -a openjdk.build/images/j2sdk-image/* $RPM_BUILD_ROOT%{dstdir}

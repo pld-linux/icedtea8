@@ -1,15 +1,9 @@
-Description: Build zero on x32
-Author: Matthias Klose <doko@ubuntu.com>
-Forwarded: http://mail.openjdk.java.net/pipermail/zero-dev/2014-January/000524.html
-Last-Update: 2014-07-06
-
-Index: b/acinclude.m4
-===================================================================
---- a/acinclude.m4
-+++ b/acinclude.m4
-@@ -2,10 +2,18 @@ AC_DEFUN([IT_SET_ARCH_SETTINGS],
+diff -dur icedtea-3.1.0.orig/acinclude.m4 icedtea-3.1.0/acinclude.m4
+--- icedtea-3.1.0.orig/acinclude.m4	2016-07-25 05:31:28.876207700 +0200
++++ icedtea-3.1.0/acinclude.m4	2016-09-20 12:56:21.236580626 +0200
+@@ -2,10 +2,18 @@
  [
-   case "${host_cpu}" in
+   case "${target_cpu}" in
      x86_64)
 -      BUILD_ARCH_DIR=amd64
 -      INSTALL_ARCH_DIR=amd64
@@ -30,7 +24,7 @@ Index: b/acinclude.m4
        ;;
      i?86)
        BUILD_ARCH_DIR=i586
-@@ -720,7 +728,7 @@ AC_DEFUN_ONCE([IT_ENABLE_ZERO_BUILD],
+@@ -641,7 +649,7 @@
    ZERO_LIBARCH="${INSTALL_ARCH_DIR}"
    dnl can't use AC_CHECK_SIZEOF on multilib
    case "${ZERO_LIBARCH}" in
@@ -38,4 +32,21 @@ Index: b/acinclude.m4
 +    arm|i386|ppc|s390|sh|sparc|x32)
        ZERO_BITSPERWORD=32
        ;;
-     aarch64|alpha|amd64|ia64|ppc64*|s390x|sparcv9)
+     aarch64|alpha|amd64|ia64|ppc64|ppc64le|s390x|sparcv9)
+@@ -2036,7 +2044,15 @@
+     arm64) ;;
+     i?86) ;;
+     sparc) ;;
+-    x86_64) ;;
++    x86_64)
++      case "${host}" in
++        *x32)
++          has_native_hotspot_port=no
++          ;;
++        *)
++	  ;;
++      esac
++      ;;
+     powerpc64) ;;
+     powerpc64le) ;;
+     *) has_native_hotspot_port=no;
