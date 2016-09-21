@@ -1,6 +1,6 @@
 diff -dur -x '*~' openjdk.orig/common/autoconf/platform.m4 openjdk/common/autoconf/platform.m4
 --- openjdk.orig/common/autoconf/platform.m4	2016-07-25 07:38:20.000000000 +0200
-+++ openjdk/common/autoconf/platform.m4	2016-09-20 13:41:45.072136115 +0200
++++ openjdk/common/autoconf/platform.m4	2016-09-21 09:03:56.589063655 +0200
 @@ -36,6 +36,12 @@
        VAR_CPU_BITS=64
        VAR_CPU_ENDIAN=little
@@ -42,7 +42,7 @@ diff -dur -x '*~' openjdk.orig/common/autoconf/platform.m4 openjdk/common/autoco
      *)      ZERO_ARCHDEF=$(echo "${OPENJDK_TARGET_CPU_LEGACY_LIB}" | tr a-z A-Z)
 diff -dur -x '*~' openjdk.orig/common/autoconf/toolchain.m4 openjdk/common/autoconf/toolchain.m4
 --- openjdk.orig/common/autoconf/toolchain.m4	2016-07-25 07:38:20.000000000 +0200
-+++ openjdk/common/autoconf/toolchain.m4	2016-09-20 13:40:24.311262883 +0200
++++ openjdk/common/autoconf/toolchain.m4	2016-09-21 09:03:56.592397163 +0200
 @@ -1026,6 +1026,10 @@
          ppc )
            # on ppc we don't prevent gcc to omit frame pointer nor strict-aliasing
@@ -56,7 +56,7 @@ diff -dur -x '*~' openjdk.orig/common/autoconf/toolchain.m4 openjdk/common/autoc
            CFLAGS_JDK="${CFLAGS_JDK} -fno-strict-aliasing"
 diff -dur -x '*~' openjdk.orig/hotspot/src/os/linux/vm/os_linux.cpp openjdk/hotspot/src/os/linux/vm/os_linux.cpp
 --- openjdk.orig/hotspot/src/os/linux/vm/os_linux.cpp	2016-09-20 13:22:05.697032126 +0200
-+++ openjdk/hotspot/src/os/linux/vm/os_linux.cpp	2016-09-20 13:40:24.314596390 +0200
++++ openjdk/hotspot/src/os/linux/vm/os_linux.cpp	2016-09-21 09:03:56.592397163 +0200
 @@ -1911,7 +1911,7 @@
  
    #if  (defined IA32)
@@ -68,7 +68,7 @@ diff -dur -x '*~' openjdk.orig/hotspot/src/os/linux/vm/os_linux.cpp openjdk/hots
      static  Elf32_Half running_arch_code=EM_IA_64;
 diff -dur -x '*~' openjdk.orig/hotspot/src/share/vm/utilities/taskqueue.hpp openjdk/hotspot/src/share/vm/utilities/taskqueue.hpp
 --- openjdk.orig/hotspot/src/share/vm/utilities/taskqueue.hpp	2016-07-25 07:38:24.000000000 +0200
-+++ openjdk/hotspot/src/share/vm/utilities/taskqueue.hpp	2016-09-20 13:40:24.314596390 +0200
++++ openjdk/hotspot/src/share/vm/utilities/taskqueue.hpp	2016-09-21 09:03:56.592397163 +0200
 @@ -400,7 +400,7 @@
    // Architectures with weak memory model require a barrier here
    // to guarantee that bottom is not older than age,
@@ -78,9 +78,24 @@ diff -dur -x '*~' openjdk.orig/hotspot/src/share/vm/utilities/taskqueue.hpp open
    OrderAccess::fence();
  #endif
    uint localBot = OrderAccess::load_acquire((volatile juint*)&_bottom);
+diff -dur -x '*~' openjdk.orig/jdk/make/gensrc/GensrcX11Wrappers.gmk openjdk/jdk/make/gensrc/GensrcX11Wrappers.gmk
+--- openjdk.orig/jdk/make/gensrc/GensrcX11Wrappers.gmk	2016-07-25 07:38:26.000000000 +0200
++++ openjdk/jdk/make/gensrc/GensrcX11Wrappers.gmk	2016-09-21 09:12:46.033398082 +0200
+@@ -86,10 +86,7 @@
+ 	$(MKDIR) -p $(@D)
+ 	$(TOOL_WRAPPERGENERATOR) $(@D) $(GENSRC_SIZER_DIR)/xlibtypes.txt "sizer" $*
+ 
+-  # use -m32/-m64 only if the compiler supports it
+-  ifeq ($(COMPILER_SUPPORTS_TARGET_BITS_FLAG), true)
+-    MEMORY_MODEL_FLAG="$(COMPILER_TARGET_BITS_FLAG)$*"
+-  endif
++  MEMORY_MODEL_FLAG="-mx32"
+ 
+   # Compile the C code into an executable.
+   $(GENSRC_X11WRAPPERS_TMP)/sizer.%.exe: $(GENSRC_X11WRAPPERS_TMP)/sizer.%.c
 diff -dur -x '*~' openjdk.orig/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c openjdk/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c
 --- openjdk.orig/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c	2016-07-25 07:38:26.000000000 +0200
-+++ openjdk/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c	2016-09-20 13:40:24.314596390 +0200
++++ openjdk/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c	2016-09-21 09:03:56.592397163 +0200
 @@ -41,7 +41,6 @@
  #endif
  #ifdef __linux__
@@ -91,7 +106,7 @@ diff -dur -x '*~' openjdk.orig/jdk/src/solaris/native/java/net/PlainDatagramSock
  
 diff -dur -x '*~' openjdk.orig/jdk/src/solaris/native/java/net/PlainSocketImpl.c openjdk/jdk/src/solaris/native/java/net/PlainSocketImpl.c
 --- openjdk.orig/jdk/src/solaris/native/java/net/PlainSocketImpl.c	2016-07-25 07:38:26.000000000 +0200
-+++ openjdk/jdk/src/solaris/native/java/net/PlainSocketImpl.c	2016-09-20 13:40:24.314596390 +0200
++++ openjdk/jdk/src/solaris/native/java/net/PlainSocketImpl.c	2016-09-21 09:03:56.595730671 +0200
 @@ -43,7 +43,6 @@
  #endif
  #ifdef __linux__
