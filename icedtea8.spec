@@ -26,39 +26,41 @@
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 # JDK/JRE version, as returned with `java -version`, '_' replaced with '.'
-%define		_jdkversion 1.8.0.101
+%define		_jdkversion 1.8.0.111
 
 Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
 Name:		icedtea8
-Version:	3.1.0
-Release:	1
+Version:	3.2.0
+Release:	0.1
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	http://icedtea.wildebeest.org/download/source/icedtea-%{version}.tar.gz
-# Source0-md5:	7b54dacd18f3adc0d77008d15db2b5c6
+# Source0-md5:	c25ceec95f8df5066c617b14f2735227
 Source1:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/openjdk.tar.xz
-# Source1-md5:	1b9b9e9102abfc387acb4d244580fb9a
+# Source1-md5:	c7a7681fff0afda6a897b135820a1440
 Source2:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/corba.tar.xz
-# Source2-md5:	d697eb0b8df5ee5242768be1678f1684
+# Source2-md5:	19a12dc608da61a6878f4614a91156af
 Source3:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxp.tar.xz
-# Source3-md5:	a3cbe28e27ebff38c8475ecae56ad446
+# Source3-md5:	8b1171ec1060517fc1c4eee162c78b33
 Source4:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxws.tar.xz
-# Source4-md5:	92da27a8622b92ee60ca67452f695927
+# Source4-md5:	ca6bbcdb0f87399bd0a5481ad55939c8
 Source5:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jdk.tar.xz
-# Source5-md5:	e2143b152be03f3ec66313294606c100
+# Source5-md5:	5f5d90b7036f1e8561f6943308528e80
 Source6:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/langtools.tar.xz
-# Source6-md5:	39c75541d8bbe9be9cfd7f58c0950641
+# Source6-md5:	9d105ca8e4de3936fe1a4916ec30ad7f
 Source7:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/hotspot.tar.xz
-# Source7-md5:	d4d70521fee922201c309a64be22b239
+# Source7-md5:	cc5f423ed2949ee8a7e25d43f0cb425f
 Source8:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/nashorn.tar.xz
-# Source8-md5:	3c266698f3b192fd5616ce9548d1ead2
+# Source8-md5:	05fa4f0110a5c9c18828a3e359b1adde
 Source10:	make-cacerts.sh
 # 0-99 patches for the IcedTea files
 Patch0:		%{name}-x32-ac.patch
+Patch1:		%{name}-heimdal.patch
 # 100-... patches applied to the extracted sources
 Patch100:	%{name}-libpath.patch
 Patch101:	%{name}-x32.patch
+Patch102:	openjdk-heimdal.patch
 URL:		http://icedtea.classpath.org/wiki/Main_Page
 BuildRequires:	alsa-lib-devel
 BuildRequires:	ant
@@ -442,6 +444,7 @@ Przykłady dla OpenJDK.
 %prep
 %setup -qn icedtea-%{version}
 %patch0 -p1
+%patch1 -p1
 
 # patches to applied to the extracted sources
 install -d pld-patches
@@ -449,6 +452,7 @@ cp -p %{PATCH100} pld-patches
 %ifarch x32
 cp -p %{PATCH101} pld-patches
 %endif
+cp -p %{PATCH102} pld-patches
 
 # let the build system extract the sources where it wants them
 install -d drops
@@ -459,7 +463,7 @@ ln -s %{SOURCE4} jaxws.tar.xz
 ln -s %{SOURCE5} jdk.tar.xz
 ln -s %{SOURCE6} langtools.tar.xz
 ln -s %{SOURCE7} hotspot.tar.xz
-ln -s %{SOURCE8} nashorn.tar.tar.xz
+ln -s %{SOURCE8} nashorn.tar.xz
 
 %build
 # Make sure we have /proc mounted - otherwise idlc will fail later.
@@ -827,8 +831,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libhprof.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libinstrument.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libj2gss.so
+%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libj2krb5.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libj2pcsc.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libj2pkcs11.so
+%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libj2sctp.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjaas_unix.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjava.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjavajpeg.so
@@ -848,7 +854,6 @@ rm -rf $RPM_BUILD_ROOT
 %ifnarch x32
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsaproc.so
 %endif
-%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsctp.so
 %{?with_sunec:%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsunec.so}
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libunpack.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libverify.so

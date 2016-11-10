@@ -1,0 +1,21 @@
+--- openjdk/common/autoconf/libraries.m4.orig	2016-11-10 09:13:39.000000000 +0100
++++ openjdk/common/autoconf/libraries.m4	2016-11-10 09:14:24.000000000 +0100
+@@ -954,12 +954,12 @@
+   AC_MSG_RESULT([$system_krb5])
+ 
+   if test "x${system_krb5}" = "xyes"; then
+-      PKG_CHECK_MODULES(KRB5, krb5, [KRB5_FOUND=yes], [KRB5_FOUND=no])
+-      if test "x${KRB5_FOUND}" = "xyes"; then
+-	  USE_EXTERNAL_KRB5=true
+-      else
+-	  AC_MSG_ERROR([--enable-system-kerberos specified, but Kerberos not found.])
+-      fi
++      KRB5_LIBS=`krb5-config --libs`
++      KRB5_CFLAGS=`krb5-config --cflags`
++      AC_SUBST(KRB5_LIBS)
++      AC_SUBST(KRB5_CFLAGS)
++      KRB5_FOUND=yes
++      USE_EXTERNAL_KRB5=true
+   else
+       USE_EXTERNAL_KRB5=false
+   fi
