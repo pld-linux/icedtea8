@@ -505,6 +505,9 @@ chmod a+x build-bin/ant
 	--disable-downloading \
 	--with-jdk-home=%{java_home} \
 	--disable-bootstrap \
+	--enable-system-kerberos \
+	--enable-system-pcsc \
+	--enable-system-sctp \
 	--%{!?with_nss:dis}%{?with_nss:en}able-nss \
 	--%{!?with_sunec:dis}%{?with_sunec:en}able-sunec
 
