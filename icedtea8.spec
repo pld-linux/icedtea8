@@ -32,7 +32,7 @@ Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
 Name:		icedtea8
 Version:	3.2.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	http://icedtea.wildebeest.org/download/source/icedtea-%{version}.tar.gz
@@ -751,7 +751,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{dstdir}/lib/%{jre_arch}
 %dir %{dstdir}/lib/%{jre_arch}/jli
 %attr(755,root,root) %{dstdir}/lib/%{jre_arch}/jli/*.so
-%attr(755,root,root) %{dstdir}/lib/%{jre_arch}/libjawt.so
 %{dstdir}/tapset
 
 %files jre
@@ -843,7 +842,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjavajpeg.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjavalcms.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjava_crw_demo.so
-%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjawt.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjdwp.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjsdt.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjsig.so
@@ -903,6 +901,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{jredir}/bin/policytool
 %attr(755,root,root) %{dstdir}/bin/policytool
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libawt_xawt.so
+%attr(755,root,root) %{dstdir}/lib/%{jre_arch}/libjawt.so
+%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjawt.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsplashscreen.so
 
 %files jre-base-alsa
