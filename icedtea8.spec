@@ -31,28 +31,28 @@
 Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
 Name:		icedtea8
-Version:	3.2.0
-Release:	2
+Version:	3.3.0
+Release:	1
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	http://icedtea.wildebeest.org/download/source/icedtea-%{version}.tar.gz
-# Source0-md5:	c25ceec95f8df5066c617b14f2735227
+# Source0-md5:	eb6fc764df734e284cb485de909d7a31
 Source1:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/openjdk.tar.xz
-# Source1-md5:	c7a7681fff0afda6a897b135820a1440
+# Source1-md5:	2d1c5467d3c7818ee7ec81d37c1bbbd4
 Source2:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/corba.tar.xz
-# Source2-md5:	19a12dc608da61a6878f4614a91156af
+# Source2-md5:	1bc8c5b63eca3918f1c4c934bf66b233
 Source3:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxp.tar.xz
-# Source3-md5:	8b1171ec1060517fc1c4eee162c78b33
+# Source3-md5:	2b3559177fead9ccb56db07191102870
 Source4:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxws.tar.xz
-# Source4-md5:	ca6bbcdb0f87399bd0a5481ad55939c8
+# Source4-md5:	92612fa7cfecf27357743c932a091b9b
 Source5:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jdk.tar.xz
-# Source5-md5:	5f5d90b7036f1e8561f6943308528e80
+# Source5-md5:	2a732b3f46453fb45b1a37b7c1ab3db8
 Source6:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/langtools.tar.xz
-# Source6-md5:	9d105ca8e4de3936fe1a4916ec30ad7f
+# Source6-md5:	b10431e5823ac859de631e183b1d0b67
 Source7:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/hotspot.tar.xz
-# Source7-md5:	cc5f423ed2949ee8a7e25d43f0cb425f
+# Source7-md5:	e600f285d00ee367b4129450c35f113a
 Source8:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/nashorn.tar.xz
-# Source8-md5:	05fa4f0110a5c9c18828a3e359b1adde
+# Source8-md5:	9cc3887801b7ad6c290c4adf4a742130
 Source10:	make-cacerts.sh
 # 0-99 patches for the IcedTea files
 Patch0:		%{name}-x32-ac.patch

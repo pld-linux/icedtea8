@@ -1,24 +1,27 @@
 diff -dur icedtea-3.1.0.orig/acinclude.m4 icedtea-3.1.0/acinclude.m4
 --- icedtea-3.1.0.orig/acinclude.m4	2016-07-25 05:31:28.876207700 +0200
 +++ icedtea-3.1.0/acinclude.m4	2016-09-20 12:56:21.236580626 +0200
-@@ -2,10 +2,18 @@
+@@ -2,11 +2,20 @@ AC_DEFUN([IT_SET_ARCH_SETTINGS],
  [
    case "${target_cpu}" in
      x86_64)
 -      BUILD_ARCH_DIR=amd64
 -      INSTALL_ARCH_DIR=amd64
 -      JRE_ARCH_DIR=amd64
+-      RPM_ARCH=x86_64
 -      ARCHFLAG="-m64"
 +      case "${host}" in
 +        *x32)
 +          BUILD_ARCH_DIR=x32
 +          INSTALL_ARCH_DIR=x32
 +          JRE_ARCH_DIR=x32
++          RPM_ARCH=x32
 +          ;;
 +        *)
 +          BUILD_ARCH_DIR=amd64
 +          INSTALL_ARCH_DIR=amd64
 +          JRE_ARCH_DIR=amd64
++          RPM_ARCH=x86_64
 +          ARCHFLAG="-m64"
 +      esac
        ;;

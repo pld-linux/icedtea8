@@ -1,6 +1,6 @@
---- openjdk/common/autoconf/libraries.m4.orig	2016-11-10 09:13:39.000000000 +0100
-+++ openjdk/common/autoconf/libraries.m4	2016-11-10 09:14:24.000000000 +0100
-@@ -954,12 +954,12 @@
+--- openjdk/common/autoconf/libraries.m4~	2017-01-29 09:15:15.000000000 +0100
++++ openjdk/common/autoconf/libraries.m4	2017-01-29 09:24:41.628850960 +0100
+@@ -938,17 +938,12 @@ AC_DEFUN_ONCE([LIB_SETUP_MISC_LIBS],
    AC_MSG_RESULT([$system_krb5])
  
    if test "x${system_krb5}" = "xyes"; then
@@ -8,7 +8,12 @@
 -      if test "x${KRB5_FOUND}" = "xyes"; then
 -	  USE_EXTERNAL_KRB5=true
 -      else
--	  AC_MSG_ERROR([--enable-system-kerberos specified, but Kerberos not found.])
+-	  AC_MSG_NOTICE([Could not find Kerberos using pkg-config; trying via krb5.h and krb5 library])
+-          AC_CHECK_LIB([krb5], [krb5_cc_default],
+-            , [AC_MSG_ERROR([Could not find Kerberos library; install Kerberos or build with --disable-system-kerberos to use the default cache location.])])
+-          AC_CHECK_HEADER([krb5.h],
+-            , [AC_MSG_ERROR([Could not find Kerberos header; install Kerberos or build with --disable-system-kerberos to use the default cache location.])])
+-      	  KRB5_LIBS="-lkrb5"
 -      fi
 +      KRB5_LIBS=`krb5-config --libs`
 +      KRB5_CFLAGS=`krb5-config --cflags`

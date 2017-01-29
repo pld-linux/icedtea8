@@ -1,12 +1,17 @@
---- icedtea-3.2.0/acinclude.m4.orig	2016-11-10 09:04:36.000000000 +0100
-+++ icedtea-3.2.0/acinclude.m4	2016-11-10 09:06:11.000000000 +0100
-@@ -1814,10 +1814,10 @@
+--- icedtea-3.3.0/acinclude.m4~	2017-01-29 09:13:46.000000000 +0100
++++ icedtea-3.3.0/acinclude.m4	2017-01-29 09:14:35.735520204 +0100
+@@ -1822,15 +1822,10 @@ AC_DEFUN_ONCE([IT_CHECK_FOR_KERBEROS],
    AC_MSG_RESULT(${ENABLE_SYSTEM_KERBEROS})
    if test x"${ENABLE_SYSTEM_KERBEROS}" = "xyes"; then
      dnl Check for krb5 header and library.
 -    PKG_CHECK_MODULES(KRB5, krb5, [KRB5_FOUND=yes], [KRB5_FOUND=no])
 -    if test "x${KRB5_FOUND}" = "xno"; then
--      AC_MSG_ERROR([Could not find Kerberos; install Kerberos or build with --disable-system-kerberos to use the default cache location.])
+-      AC_MSG_NOTICE([Could not find Kerberos using pkg-config; trying via krb5.h and krb5 library])
+-      AC_CHECK_LIB([krb5], [krb5_cc_default],
+-        , [AC_MSG_ERROR([Could not find Kerberos library; install Kerberos or build with --disable-system-kerberos to use the default cache location.])])
+-      AC_CHECK_HEADER([krb5.h],
+-        , [AC_MSG_ERROR([Could not find Kerberos header; install Kerberos or build with --disable-system-kerberos to use the default cache location.])])
+-      KRB5_LIBS="-lkrb5"
 -    fi
 +    KRB5_LIBS=`krb5-config --libs`
 +    KRB5_CFLAGS=`krb5-config --cflags`
