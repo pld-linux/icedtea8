@@ -536,6 +536,13 @@ cd ../../..
 # smoke test
 openjdk.build/jdk/bin/java -version
 
+# _jdkversion check
+JDKVER=$(openjdk.build/jdk/bin/java -version 2>&1 | gawk -F'"' '/openjdk version/ { s=$2; gsub("_", ".", s); print s; } ')
+if [ "$JDKVER" != "%{_jdkversion}" ]; then
+	echo "Please update _jdkversion macro to $JDKVER" >&2
+	exit 1
+fi
+
 %{?with_cacerts:%{__sh} %{SOURCE10}}
 
 %install
