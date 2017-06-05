@@ -648,7 +648,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/wsgen
 %attr(755,root,root) %{_bindir}/wsimport
 %attr(755,root,root) %{_bindir}/xjc
-%{_jvmdir}/java
 %{_mandir}/man1/extcheck.1*
 %{_mandir}/man1/idlj.1*
 %{_mandir}/man1/jarsigner.1*
@@ -789,6 +788,7 @@ rm -rf $RPM_BUILD_ROOT
 %lang(ja) %{_mandir}/ja/man1/servertool.1*
 %lang(ja) %{_mandir}/ja/man1/tnameserv.1*
 %lang(ja) %{_mandir}/ja/man1/unpack200.1*
+%{_jvmdir}/java
 
 %files jre-base
 %defattr(644,root,root,755)
