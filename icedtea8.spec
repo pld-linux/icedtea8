@@ -92,7 +92,7 @@ BuildRequires:	lsb-release
 BuildRequires:	paxctl
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.557
-BuildRequires:	systemtap-sdt-devel
+BuildRequires:	systemtap-sdt-devel >= 3.2
 BuildRequires:	unzip
 BuildRequires:	util-linux
 BuildRequires:	xorg-lib-libX11-devel
