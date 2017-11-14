@@ -524,7 +524,7 @@ cd openjdk/common/autoconf
 sh autogen.sh
 cd ../../..
 
-%{__make} -j1 icedtea add-systemtap \
+%{__make} -j1 \
 	SHELL=/bin/bash \
 	DISABLE_HOTSPOT_OS_VERSION_CHECK=ok \
 	DISTRIBUTION_PATCHES="$(echo pld-patches/*.patch)" \
@@ -829,6 +829,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/jli/*.so
 %dir %{jredir}/lib/%{jre_arch}/server
 %{jredir}/lib/%{jre_arch}/server/Xusage.txt
+%{jredir}/lib/%{jre_arch}/server/classes.jsa
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/server/*.so
 %{jredir}/lib/%{jre_arch}/jvm.cfg
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libattach.so
@@ -869,6 +870,7 @@ rm -rf $RPM_BUILD_ROOT
 %{jredir}/lib/security
 %{jredir}/lib/hijrah-config-umalqura.properties
 %{jredir}/lib/tzdb.dat
+%{jredir}/lib/tz.properties
 
 %if %{with webstart}
 %{jredir}/lib/about.jar
