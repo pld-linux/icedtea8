@@ -829,7 +829,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/jli/*.so
 %dir %{jredir}/lib/%{jre_arch}/server
 %{jredir}/lib/%{jre_arch}/server/Xusage.txt
+%ifnarch x32
 %{jredir}/lib/%{jre_arch}/server/classes.jsa
+%endif
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/server/*.so
 %{jredir}/lib/%{jre_arch}/jvm.cfg
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libattach.so
