@@ -26,33 +26,33 @@
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 # JDK/JRE version, as returned with `java -version`, '_' replaced with '.'
-%define		_jdkversion 1.8.0.151
+%define		_jdkversion 1.8.0.161
 
 Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
 Name:		icedtea8
-Version:	3.6.0
-Release:	2
+Version:	3.7.0
+Release:	1
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	http://icedtea.wildebeest.org/download/source/icedtea-%{version}.tar.gz
-# Source0-md5:	9e806e6f724fb5aa74cf7c981a8f3dc9
+# Source0-md5:	13d2fe871e762ced7bbfb5169a542943
 Source1:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/openjdk.tar.xz
-# Source1-md5:	37bc76dcf76855ae20cdea8b4b3eaf34
+# Source1-md5:	c686c8d283bc9f89a8874c5344d4e83a
 Source2:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/corba.tar.xz
-# Source2-md5:	a7fbb5da0c62ba76fa931e21165ea5b1
+# Source2-md5:	2ee9aa7e85ed2fb9af1ab87fb87e404b
 Source3:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxp.tar.xz
-# Source3-md5:	897c3588947c5310028505485111bd87
+# Source3-md5:	c3a5eb1567ac3d8cbfa3dd8cd0848b6f
 Source4:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxws.tar.xz
-# Source4-md5:	d335e7198f15134d9a6f05e5325d41ae
+# Source4-md5:	286778356533d5fe3d8ab9c2c747fe3b
 Source5:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jdk.tar.xz
-# Source5-md5:	4ad0e6370c59d85c2b4578334a6a2c62
+# Source5-md5:	84c39ca647e24fe81c08bc10e016d194
 Source6:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/langtools.tar.xz
-# Source6-md5:	45d8775e1eaf78f422591bde7e459c38
+# Source6-md5:	c03e84cceca1d9173b409920fad3aa93
 Source7:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/hotspot.tar.xz
-# Source7-md5:	7f9248ac4155b3dd134ecf34f7fe359c
+# Source7-md5:	85693d6cd04ca1b9a694afa81e7c4dda
 Source8:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/nashorn.tar.xz
-# Source8-md5:	90ec301be3b9c016abc5e6804f7efbeb
+# Source8-md5:	4895a6a002374c0dea0be055cb75b9a5
 Source10:	make-cacerts.sh
 # 0-99 patches for the IcedTea files
 Patch0:		%{name}-x32-ac.patch
@@ -534,14 +534,14 @@ cd ../../..
 # smoke test
 openjdk.build/jdk/bin/java -version
 
+%{?with_cacerts:%{__sh} %{SOURCE10}}
+
 # _jdkversion check
 JDKVER=$(openjdk.build/jdk/bin/java -version 2>&1 | gawk -F'"' '/openjdk version/ { s=$2; gsub("_", ".", s); print s; } ')
 if [ "$JDKVER" != "%{_jdkversion}" ]; then
 	echo "Please update _jdkversion macro to $JDKVER" >&2
 	exit 1
 fi
-
-%{?with_cacerts:%{__sh} %{SOURCE10}}
 
 %install
 rm -rf $RPM_BUILD_ROOT
