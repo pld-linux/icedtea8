@@ -1,7 +1,7 @@
-diff -dur icedtea-3.1.0.orig/acinclude.m4 icedtea-3.1.0/acinclude.m4
---- icedtea-3.1.0.orig/acinclude.m4	2016-07-25 05:31:28.876207700 +0200
-+++ icedtea-3.1.0/acinclude.m4	2016-09-20 12:56:21.236580626 +0200
-@@ -2,11 +2,20 @@ AC_DEFUN([IT_SET_ARCH_SETTINGS],
+diff -dur icedtea-3.9.0.orig/acinclude.m4 icedtea-3.9.0/acinclude.m4
+--- icedtea-3.9.0.orig/acinclude.m4	2018-09-27 17:37:12.000000000 +0200
++++ icedtea-3.9.0/acinclude.m4	2018-10-02 08:55:13.000000000 +0200
+@@ -2,12 +2,23 @@
  [
    case "${target_cpu}" in
      x86_64)
@@ -9,6 +9,7 @@ diff -dur icedtea-3.1.0.orig/acinclude.m4 icedtea-3.1.0/acinclude.m4
 -      INSTALL_ARCH_DIR=amd64
 -      JRE_ARCH_DIR=amd64
 -      RPM_ARCH=x86_64
+-      SYSTEMTAP_ARCH_DIR=x86_64
 -      ARCHFLAG="-m64"
 +      case "${host}" in
 +        *x32)
@@ -16,18 +17,21 @@ diff -dur icedtea-3.1.0.orig/acinclude.m4 icedtea-3.1.0/acinclude.m4
 +          INSTALL_ARCH_DIR=x32
 +          JRE_ARCH_DIR=x32
 +          RPM_ARCH=x32
++          SYSTEMTAP_ARCH_DIR=x32
 +          ;;
 +        *)
 +          BUILD_ARCH_DIR=amd64
 +          INSTALL_ARCH_DIR=amd64
 +          JRE_ARCH_DIR=amd64
 +          RPM_ARCH=x86_64
++          SYSTEMTAP_ARCH_DIR=x86_64
 +          ARCHFLAG="-m64"
++          ;;
 +      esac
        ;;
      i?86)
        BUILD_ARCH_DIR=i586
-@@ -641,7 +649,7 @@
+@@ -664,7 +675,7 @@
    ZERO_LIBARCH="${INSTALL_ARCH_DIR}"
    dnl can't use AC_CHECK_SIZEOF on multilib
    case "${ZERO_LIBARCH}" in
@@ -36,8 +40,8 @@ diff -dur icedtea-3.1.0.orig/acinclude.m4 icedtea-3.1.0/acinclude.m4
        ZERO_BITSPERWORD=32
        ;;
      aarch64|alpha|amd64|ia64|ppc64|ppc64le|s390x|sparcv9)
-@@ -2036,7 +2044,15 @@
-     arm64) ;;
+@@ -2192,7 +2203,15 @@
+     aarch64|arm64) if test "x${HSBUILD}" = "xaarch32"; then has_native_hotspot_port=no; fi ;;
      i?86) ;;
      sparc) ;;
 -    x86_64) ;;
@@ -52,4 +56,4 @@ diff -dur icedtea-3.1.0.orig/acinclude.m4 icedtea-3.1.0/acinclude.m4
 +      ;;
      powerpc64) ;;
      powerpc64le) ;;
-     *) has_native_hotspot_port=no;
+     arm*) if test "x${HSBUILD}" != "xaarch32"; then has_native_hotspot_port=no; fi ;;
