@@ -26,37 +26,38 @@
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 # JDK/JRE version, as returned with `java -version`, '_' replaced with '.'
-%define		_jdkversion 1.8.0.201
+%define		_jdkversion 1.8.0.212
 
 Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
 Name:		icedtea8
-Version:	3.11.0
+Version:	3.12.0
 Release:	1
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	http://icedtea.wildebeest.org/download/source/icedtea-%{version}.tar.gz
-# Source0-md5:	4ed61e6939b03d4f0bc2ed5e6d7b3f74
+# Source0-md5:	c47bdcf49fdb599c7f78d4648c83c1c3
 Source1:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/openjdk.tar.xz
-# Source1-md5:	d9b39123baae50e611ed996ff714848f
+# Source1-md5:	1c9ab5b4de75e03b07d559e04f38c0fd
 Source2:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/corba.tar.xz
-# Source2-md5:	64b6ffdcd907dc2fad91583b31d27c70
+# Source2-md5:	80284b77c2953773f3d528498f97661d
 Source3:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxp.tar.xz
-# Source3-md5:	333bb1c0dfd404226c4f1844a1661ee1
+# Source3-md5:	8936437215e302407ae47e26fd3715ba
 Source4:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxws.tar.xz
-# Source4-md5:	eaf803f7e8876ec5fcc8220a37b080b8
+# Source4-md5:	ebbaf9049b3ce10266669f222c67a49c
 Source5:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jdk.tar.xz
-# Source5-md5:	5749d5060b4abfdd5dde0e7a033d877c
+# Source5-md5:	dd7b36c08d0b491fd07c1d1978cbf378
 Source6:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/langtools.tar.xz
-# Source6-md5:	862c9d13734526b8bf21279bb0650d71
+# Source6-md5:	d243725860f8b78f750a30b287d2e435
 Source7:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/hotspot.tar.xz
-# Source7-md5:	f195edad7ffc0736b2146491ce7c3172
+# Source7-md5:	7450282666c317c0790838f2aa0b4c20
 Source8:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/nashorn.tar.xz
-# Source8-md5:	59f2783ab3ffdaebb1d0e2d48d336603
+# Source8-md5:	c97334e32461167d6af8d5c8df0e0ec8
 Source10:	make-cacerts.sh
 # 0-99 patches for the IcedTea files
 Patch0:		%{name}-x32-ac.patch
 Patch1:		%{name}-heimdal.patch
+Patch2:		%{name}-bashisms.patch
 # 100-... patches applied to the extracted sources
 Patch100:	%{name}-libpath.patch
 Patch101:	%{name}-x32.patch
@@ -70,6 +71,7 @@ BuildRequires:	bash
 %{?with_cacerts:BuildRequires:	ca-certificates-update}
 BuildRequires:	cups-devel
 BuildRequires:	/usr/bin/jar
+BuildRequires:	fontconfig-devel
 BuildRequires:	freetype-devel >= 2.3
 BuildRequires:	gawk
 BuildRequires:	giflib-devel >= 5.1
@@ -443,6 +445,7 @@ Przykłady dla OpenJDK.
 %setup -qn icedtea-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 # patches to applied to the extracted sources
 install -d pld-patches
@@ -503,6 +506,7 @@ chmod a+x build-bin/ant
 	--disable-downloading \
 	--with-jdk-home=%{java_home} \
 	--disable-bootstrap \
+	--enable-improved-font-rendering \
 	--enable-system-kerberos \
 	--enable-system-pcsc \
 	--enable-system-sctp \
@@ -759,6 +763,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files jre
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/clhsdb
 %attr(755,root,root) %{_bindir}/java
 %attr(755,root,root) %{_bindir}/keytool
 %attr(755,root,root) %{_bindir}/orbd
@@ -800,6 +805,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_jvmdir}/%{name}-jre
 %dir %{jredir}/bin
 %dir %{dstdir}/bin
+%attr(755,root,root) %{jredir}/bin/clhsdb
+%attr(755,root,root) %{dstdir}/bin/clhsdb
 %attr(755,root,root) %{jredir}/bin/java
 %attr(755,root,root) %{dstdir}/bin/java
 %attr(755,root,root) %{jredir}/bin/jjs
@@ -901,12 +908,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %files jre-X11
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/hsdb
 %attr(755,root,root) %{_bindir}/policytool
 %{_mandir}/man1/policytool.1*
 %lang(ja) %{_mandir}/ja/man1/policytool.1*
 
 %files jre-base-X11
 %defattr(644,root,root,755)
+%attr(755,root,root) %{jredir}/bin/hsdb
+%attr(755,root,root) %{dstdir}/bin/hsdb
 %attr(755,root,root) %{jredir}/bin/policytool
 %attr(755,root,root) %{dstdir}/bin/policytool
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libawt_xawt.so

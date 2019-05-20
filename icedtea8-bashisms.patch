@@ -1,0 +1,38 @@
+--- icedtea-3.12.0/acinclude.m4.orig	2019-05-20 22:43:01.617768201 +0200
++++ icedtea-3.12.0/acinclude.m4	2019-05-20 22:44:41.200667060 +0200
+@@ -2797,7 +2797,7 @@
+      test "x${VENDOR_NAME}" = xyes ||
+      test "x${VENDOR_NAME}" = xno; then
+        AC_MSG_ERROR([--with-vendor-name must have a value])
+-  elif [ ! [[ ${VENDOR_NAME} =~ ^[[:print:]]*$ ]] ]; then
++  elif [ ! echo ${VENDOR_NAME} | grep -q '^[[:print:]]*$' ]; then
+     AC_MSG_ERROR([--with-vendor-name value contains non-printing characters: ${VENDOR_NAME}])
+   fi
+   AC_SUBST(VENDOR_NAME)
+@@ -2812,7 +2812,7 @@
+      test "x${VENDOR_URL}" = xyes ||
+      test "x${VENDOR_URL}" = xno; then
+        AC_MSG_ERROR([--with-vendor-url must have a value])
+-  elif [ ! [[ ${VENDOR_URL} =~ ^[[:print:]]*$ ]] ]; then
++  elif [ ! echo ${VENDOR_URL} | grep -q '^[[:print:]]*$' ]; then
+     AC_MSG_ERROR([--with-vendor-url value contains non-printing characters: ${VENDOR_URL}])
+   fi
+   AC_SUBST(VENDOR_URL)
+@@ -2827,7 +2827,7 @@
+      test "x${VENDOR_BUG_URL}" = xyes ||
+      test "x${VENDOR_BUG_URL}" = xno; then
+        AC_MSG_ERROR([--with-vendor-bug-url must have a value])
+-  elif [ ! [[ ${VENDOR_BUG_URL} =~ ^[[:print:]]*$ ]] ]; then
++  elif [ ! echo ${VENDOR_BUG_URL} | grep -q '^[[:print:]]*$' ]; then
+     AC_MSG_ERROR([--with-vendor-bug-url value contains non-printing characters: ${VENDOR_BUG_URL}])
+   fi
+   AC_SUBST(VENDOR_BUG_URL)
+@@ -2842,7 +2842,7 @@
+      test "x${VENDOR_VM_BUG_URL}" = xyes ||
+      test "x${VENDOR_VM_BUG_URL}" = xno; then
+        AC_MSG_ERROR([--with-vendor-vm-bug-url must have a value])
+-  elif [ ! [[ ${VENDOR_VM_BUG_URL} =~ ^[[:print:]]*$ ]] ]; then
++  elif [ ! echo ${VENDOR_VM_BUG_URL} | grep -q '^[[:print:]]*$' ]; then
+     AC_MSG_ERROR([--with-vendor-vm-bug-url value contains non-printing characters: ${VENDOR_VM_BUG_URL}])
+   fi
+   AC_SUBST(VENDOR_VM_BUG_URL)
