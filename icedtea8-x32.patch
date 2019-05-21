@@ -40,20 +40,19 @@ diff -dur -x '*~' openjdk.orig/common/autoconf/platform.m4 openjdk/common/autoco
      x86_64*) ZERO_ARCHDEF=AMD64 ;;
      x86)     ZERO_ARCHDEF=IA32  ;;
      *)      ZERO_ARCHDEF=$(echo "${OPENJDK_TARGET_CPU_LEGACY_LIB}" | tr a-z A-Z)
-diff -dur -x '*~' openjdk.orig/common/autoconf/toolchain.m4 openjdk/common/autoconf/toolchain.m4
---- openjdk.orig/common/autoconf/toolchain.m4	2016-07-25 07:38:20.000000000 +0200
-+++ openjdk/common/autoconf/toolchain.m4	2016-09-21 09:03:56.592397163 +0200
-@@ -1026,6 +1026,10 @@
-         ppc )
-           # on ppc we don't prevent gcc to omit frame pointer nor strict-aliasing
-           ;;
-+        x32 )
-+          COMMON_CCXXFLAGS_JDK="$COMMON_CCXXFLAGS_JDK -fno-omit-frame-pointer -DX32"
-+          CFLAGS_JDK="${CFLAGS_JDK} -fno-strict-aliasing"
-+          ;;
-         * )
-           COMMON_CCXXFLAGS_JDK="$COMMON_CCXXFLAGS_JDK -fno-omit-frame-pointer"
-           CFLAGS_JDK="${CFLAGS_JDK} -fno-strict-aliasing"
+--- openjdk/common/autoconf/flags.m4~	2019-04-18 04:46:13.000000000 +0200
++++ openjdk/common/autoconf/flags.m4	2019-05-21 09:04:04.356004924 +0200
+@@ -482,6 +482,10 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAG
+       ppc )
+         # on ppc we don't prevent gcc to omit frame pointer nor strict-aliasing
+         ;;
++       x32 )
++        COMMON_CCXXFLAGS_JDK="$COMMON_CCXXFLAGS_JDK -fno-omit-frame-pointer -DX32"
++        CFLAGS_JDK="${CFLAGS_JDK} -fno-strict-aliasing"
++        ;;
+       x86 )
+         CCXXFLAGS_JDK="$CCXXFLAGS_JDK -fno-omit-frame-pointer -fstack-protector"
+         CFLAGS_JDK="${CFLAGS_JDK} -fno-strict-aliasing -fstack-protector"
 diff -dur -x '*~' openjdk.orig/hotspot/src/os/linux/vm/os_linux.cpp openjdk/hotspot/src/os/linux/vm/os_linux.cpp
 --- openjdk.orig/hotspot/src/os/linux/vm/os_linux.cpp	2016-09-20 13:22:05.697032126 +0200
 +++ openjdk/hotspot/src/os/linux/vm/os_linux.cpp	2016-09-21 09:03:56.592397163 +0200
