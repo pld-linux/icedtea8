@@ -574,6 +574,7 @@ rmdir $RPM_BUILD_ROOT%{dstdir}/man/ja_JP.UTF-8
 rm $RPM_BUILD_ROOT%{dstdir}/man/ja
 mv $RPM_BUILD_ROOT%{dstdir}/man/man1 $RPM_BUILD_ROOT%{_mandir}/man1
 rmdir $RPM_BUILD_ROOT%{dstdir}/man
+rm $RPM_BUILD_ROOT%{dstdir}/jre/bin/{cl,}hsdb
 
 # replace duplicates with symlinks, link to %{_bindir}
 for path in $RPM_BUILD_ROOT%{dstdir}/bin/*; do
@@ -805,7 +806,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_jvmdir}/%{name}-jre
 %dir %{jredir}/bin
 %dir %{dstdir}/bin
-%attr(755,root,root) %{jredir}/bin/clhsdb
 %attr(755,root,root) %{dstdir}/bin/clhsdb
 %attr(755,root,root) %{jredir}/bin/java
 %attr(755,root,root) %{dstdir}/bin/java
@@ -915,7 +915,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files jre-base-X11
 %defattr(644,root,root,755)
-%attr(755,root,root) %{jredir}/bin/hsdb
 %attr(755,root,root) %{dstdir}/bin/hsdb
 %attr(755,root,root) %{jredir}/bin/policytool
 %attr(755,root,root) %{dstdir}/bin/policytool
