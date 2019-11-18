@@ -26,38 +26,37 @@
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 # JDK/JRE version, as returned with `java -version`, '_' replaced with '.'
-%define		_jdkversion 1.8.0.222
+%define		_jdkversion 1.8.0.232
 
 Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
 Name:		icedtea8
-Version:	3.13.0
-Release:	2
+Version:	3.14.0
+Release:	1
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	http://icedtea.wildebeest.org/download/source/icedtea-%{version}.tar.gz
-# Source0-md5:	c8ca65f40e0a721384b4cc93a0cc404e
+# Source0-md5:	9b9cadaa898fd02362805dac6fb2773d
 Source1:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/openjdk.tar.xz
-# Source1-md5:	6ca0d831f2e7c7aa2c7f90005eb6bb42
+# Source1-md5:	1a5bf40fb002934f7587e0c87afe725d
 Source2:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/corba.tar.xz
-# Source2-md5:	bb3c3825352ca50e104d8e871f72aed5
+# Source2-md5:	bb3ed3a58ced36584aa1e5ff526551cd
 Source3:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxp.tar.xz
-# Source3-md5:	d18fe62f73cfeb403db205a4fb5950e3
+# Source3-md5:	40749688c030e4d17e4dd09d76e3b318
 Source4:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxws.tar.xz
-# Source4-md5:	e0521c962a051790636bdd5c8dc3d098
+# Source4-md5:	d040f6cdc7ac6ca6443f552c9c44c02c
 Source5:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jdk.tar.xz
-# Source5-md5:	32928a839f7d711c09ff03a11fd60036
+# Source5-md5:	639173550f40298a00929a7b7412ec2e
 Source6:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/langtools.tar.xz
-# Source6-md5:	3304542bfcd2fa2474ac489e16ee0e64
+# Source6-md5:	573ca26d5596cba590e097c13ae1cb5d
 Source7:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/hotspot.tar.xz
-# Source7-md5:	f2625e6b7e3f555af155533e8239ad9a
+# Source7-md5:	c83a44a47fe3ca93d546a155b71a3761
 Source8:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/nashorn.tar.xz
-# Source8-md5:	51b622871d03b271a85bbdff465eb92e
+# Source8-md5:	8647edf92cd07fd1c28ed3ce5fcb3895
 Source10:	make-cacerts.sh
 # 0-99 patches for the IcedTea files
 Patch0:		%{name}-x32-ac.patch
 Patch1:		%{name}-heimdal.patch
-Patch2:		%{name}-bashisms.patch
 # 100-... patches applied to the extracted sources
 Patch100:	%{name}-libpath.patch
 Patch101:	%{name}-x32.patch
@@ -445,7 +444,6 @@ Przykłady dla OpenJDK.
 %setup -qn icedtea-%{version}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 # patches to applied to the extracted sources
 install -d pld-patches
@@ -574,7 +572,6 @@ rmdir $RPM_BUILD_ROOT%{dstdir}/man/ja_JP.UTF-8
 rm $RPM_BUILD_ROOT%{dstdir}/man/ja
 mv $RPM_BUILD_ROOT%{dstdir}/man/man1 $RPM_BUILD_ROOT%{_mandir}/man1
 rmdir $RPM_BUILD_ROOT%{dstdir}/man
-rm $RPM_BUILD_ROOT%{dstdir}/jre/bin/{cl,}hsdb
 
 # replace duplicates with symlinks, link to %{_bindir}
 for path in $RPM_BUILD_ROOT%{dstdir}/bin/*; do

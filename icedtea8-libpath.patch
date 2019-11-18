@@ -1,10 +1,9 @@
-diff -dur -x '*~' -x '*.orig' -x '*.rej' openjdk.orig/hotspot/src/os/linux/vm/os_linux.cpp openjdk/hotspot/src/os/linux/vm/os_linux.cpp
---- openjdk.orig/hotspot/src/os/linux/vm/os_linux.cpp	2016-07-25 07:38:24.000000000 +0200
-+++ openjdk/hotspot/src/os/linux/vm/os_linux.cpp	2016-09-20 09:17:58.000000000 +0200
-@@ -309,9 +309,9 @@
+--- openjdk/hotspot/src/os/linux/vm/os_linux.cpp~	2015-12-24 07:19:42.000000000 +0100
++++ openjdk/hotspot/src/os/linux/vm/os_linux.cpp	2019-11-18 20:11:28.343551301 +0100
+@@ -370,9 +370,9 @@ void os::init_system_properties_values()
  //        ...
  //        7: The default directories, normally /lib and /usr/lib.
- #if defined(AMD64) || defined(_LP64) && (defined(SPARC) || defined(PPC) || defined(S390)) || defined(BUILTIN_SIM)
+ #if defined(AMD64) || defined(_LP64) && (defined(SPARC) || defined(PPC) || defined(S390))
 -#define DEFAULT_LIBPATH "/usr/lib64:/lib64:/lib:/usr/lib"
 +#define DEFAULT_LIBPATH "/usr/lib64/java:/usr/lib64:/lib64:/lib:/usr/lib"
  #else
