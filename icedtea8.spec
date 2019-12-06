@@ -32,7 +32,7 @@ Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
 Name:		icedtea8
 Version:	3.14.0
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	http://icedtea.wildebeest.org/download/source/icedtea-%{version}.tar.gz
@@ -303,6 +303,7 @@ Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath - środowisko uruchomieniowe
 Group:		Development/Languages/Java
 Requires:	jpackage-utils >= 0:1.7.5-4
 Provides:	jre(%{name})
+Provides:	jre-base = %{_jdkversion}
 
 %description jre-base
 OpenJDK runtime environment built using free software only.
@@ -317,6 +318,7 @@ Summary(pl.UTF-8):	IcedTea7 OpenJDK - środowisko uruchomieniowe - obsługa X11
 Group:		Development/Languages/Java
 Requires:	%{name}-jre-base = %{version}-%{release}
 Requires:	%{name}-jre-base-freetype = %{version}-%{release}
+Provides:	jre-base-X11 = %{_jdkversion}
 
 %description jre-base-X11
 X11 support for OpenJDK runtime environment built using free software
