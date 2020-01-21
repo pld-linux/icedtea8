@@ -26,33 +26,33 @@
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 # JDK/JRE version, as returned with `java -version`, '_' replaced with '.'
-%define		_jdkversion 1.8.0.232
+%define		_jdkversion 1.8.0.242
 
 Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
 Name:		icedtea8
-Version:	3.14.0
-Release:	3
+Version:	3.15.0
+Release:	1
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	http://icedtea.wildebeest.org/download/source/icedtea-%{version}.tar.gz
-# Source0-md5:	9b9cadaa898fd02362805dac6fb2773d
+# Source0-md5:	aa67914ccaa4e06310a2a98bda1e4d35
 Source1:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/openjdk.tar.xz
-# Source1-md5:	1a5bf40fb002934f7587e0c87afe725d
+# Source1-md5:	f8de18e2a79f5cd0a4f65c134505f1b3
 Source2:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/corba.tar.xz
-# Source2-md5:	bb3ed3a58ced36584aa1e5ff526551cd
+# Source2-md5:	a1835170b80736ea01548892d05269b9
 Source3:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxp.tar.xz
-# Source3-md5:	40749688c030e4d17e4dd09d76e3b318
+# Source3-md5:	bac0dfc3edeb36bb0a8e17bf3e8638ba
 Source4:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxws.tar.xz
-# Source4-md5:	d040f6cdc7ac6ca6443f552c9c44c02c
+# Source4-md5:	c0ec29233b16d028710f3e8a46fa0d8d
 Source5:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jdk.tar.xz
-# Source5-md5:	639173550f40298a00929a7b7412ec2e
+# Source5-md5:	1fb48b1c922b5e451c8c974e7e017c81
 Source6:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/langtools.tar.xz
-# Source6-md5:	573ca26d5596cba590e097c13ae1cb5d
+# Source6-md5:	aac611dac366e55f608b8c0c945b230c
 Source7:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/hotspot.tar.xz
-# Source7-md5:	c83a44a47fe3ca93d546a155b71a3761
+# Source7-md5:	1bf3fe318193497ad84f96c166261218
 Source8:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/nashorn.tar.xz
-# Source8-md5:	8647edf92cd07fd1c28ed3ce5fcb3895
+# Source8-md5:	c4b7700db1ccdb5817a8a614934089a3
 Source10:	make-cacerts.sh
 # 0-99 patches for the IcedTea files
 Patch0:		%{name}-x32-ac.patch
