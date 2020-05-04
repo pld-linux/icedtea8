@@ -92,25 +92,3 @@ diff -dur -x '*~' openjdk.orig/jdk/make/gensrc/GensrcX11Wrappers.gmk openjdk/jdk
  
    # Compile the C code into an executable.
    $(GENSRC_X11WRAPPERS_TMP)/sizer.%.exe: $(GENSRC_X11WRAPPERS_TMP)/sizer.%.c
-diff -dur -x '*~' openjdk.orig/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c openjdk/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c
---- openjdk.orig/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c	2016-07-25 07:38:26.000000000 +0200
-+++ openjdk/jdk/src/solaris/native/java/net/PlainDatagramSocketImpl.c	2016-09-21 09:03:56.592397163 +0200
-@@ -41,7 +41,6 @@
- #endif
- #ifdef __linux__
- #include <unistd.h>
--#include <sys/sysctl.h>
- #include <sys/utsname.h>
- #include <netinet/ip.h>
- 
-diff -dur -x '*~' openjdk.orig/jdk/src/solaris/native/java/net/PlainSocketImpl.c openjdk/jdk/src/solaris/native/java/net/PlainSocketImpl.c
---- openjdk.orig/jdk/src/solaris/native/java/net/PlainSocketImpl.c	2016-07-25 07:38:26.000000000 +0200
-+++ openjdk/jdk/src/solaris/native/java/net/PlainSocketImpl.c	2016-09-21 09:03:56.595730671 +0200
-@@ -43,7 +43,6 @@
- #endif
- #ifdef __linux__
- #include <unistd.h>
--#include <sys/sysctl.h>
- #endif
- 
- #include "jvm.h"
