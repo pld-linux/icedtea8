@@ -12,10 +12,11 @@
 # - maybe build Shark VM, at least on i486, as the zero-assembly VM is very slow
 # - pass %{rpmcflags} to build
 
-%bcond_with bootstrap   # build a bootstrap version, using icedtea6
-%bcond_without nss	# don't use NSS
-%bcond_without cacerts	# don't include the default CA certificates
-%bcond_without sunec	# enable Sun EC crypt lib
+%bcond_with	bootstrap	# build a bootstrap version, using icedtea6
+%bcond_without	nss		# don't use NSS
+%bcond_without	cacerts		# don't include the default CA certificates
+%bcond_without	sunec		# enable Sun EC crypt lib
+%bcond_without	systemtap	# build without systemtap
 
 %if %{with bootstrap}
 %define		use_jdk	openjdk8
@@ -93,7 +94,7 @@ BuildRequires:	lsb-release
 BuildRequires:	paxctl
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.557
-BuildRequires:	systemtap-sdt-devel >= 3.2
+%{?with_systemtap:BuildRequires:	systemtap-sdt-devel >= 3.2}
 BuildRequires:	unzip
 BuildRequires:	util-linux
 BuildRequires:	xorg-lib-libX11-devel
@@ -762,7 +763,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{dstdir}/lib/%{jre_arch}
 %dir %{dstdir}/lib/%{jre_arch}/jli
 %attr(755,root,root) %{dstdir}/lib/%{jre_arch}/jli/*.so
-%{dstdir}/tapset
+%{?with_systemtap:%{dstdir}/tapset}
 
 %files jre
 %defattr(644,root,root,755)
