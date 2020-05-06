@@ -155,6 +155,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %ifarch x32
 %define		jre_arch	x32
 %endif
+%ifarch aarch64
+%define		jre_arch	aarch64
+%endif
 
 # to break artificial subpackage dependency loops
 %define		_noautoreq	'libmawt.so' java\\\\(ClassDataVersion\\\\)
