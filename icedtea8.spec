@@ -515,6 +515,7 @@ chmod a+x build-bin/ant
 	--with-jdk-home=%{java_home} \
 	--disable-bootstrap \
 	--enable-improved-font-rendering \
+	%{__enable_disable jfr} \
 	--enable-system-kerberos \
 	--enable-system-pcsc \
 	--enable-system-sctp \
