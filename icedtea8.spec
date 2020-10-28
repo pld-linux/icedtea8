@@ -24,36 +24,40 @@
 %define		use_jdk	icedtea8
 %endif
 
+%ifarch %{ix86} %{x8664} sparc ppc64 ppc64le %{arm} aarch64
+%define		with_jfr	1
+%endif
+
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 # JDK/JRE version, as returned with `java -version`, '_' replaced with '.'
-%define		_jdkversion 1.8.0.252
+%define		_jdkversion 1.8.0.272
 
 Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
 Name:		icedtea8
-Version:	3.16.0
-Release:	2
+Version:	3.17.0
+Release:	1
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	http://icedtea.wildebeest.org/download/source/icedtea-%{version}.tar.gz
-# Source0-md5:	9925a7ce9338a0bb07f61dbbcdf83203
+# Source0-md5:	0876235a58ca6faaa867c86355634159
 Source1:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/openjdk.tar.xz
-# Source1-md5:	0908aaf4976a9092ea41657a53aa3195
+# Source1-md5:	72d6ea363585f9239272bccae44a7ce8
 Source2:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/corba.tar.xz
-# Source2-md5:	293716bae4f8519f5223efe3b03cc38f
+# Source2-md5:	2b1909b64ddc31146c3bbe20ac186313
 Source3:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxp.tar.xz
-# Source3-md5:	83d457c1eeb61874dbcb0a0dca06cc00
+# Source3-md5:	02ae42f5c31a623a83d4ad033929c657
 Source4:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxws.tar.xz
-# Source4-md5:	f0708de204b736ea0f5bb4125a7a8943
+# Source4-md5:	a6b6410cbd9c59c6ba5d56c8ae4dd5f6
 Source5:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jdk.tar.xz
-# Source5-md5:	55a648609f76b93ac19878bc21ba0f35
+# Source5-md5:	ad78076d2669f9724a1b770b8d383858
 Source6:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/langtools.tar.xz
-# Source6-md5:	5ba24b93a4f909e5725ad6c04b8f3ed4
+# Source6-md5:	6a8483f99c3ed6887404c78e1ef54288
 Source7:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/hotspot.tar.xz
-# Source7-md5:	a5e5491cf87903cae64bda8fef6e3314
+# Source7-md5:	20a92b463cced1155a0352b2bdb3c21d
 Source8:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/nashorn.tar.xz
-# Source8-md5:	6fd7950ea8afb9ae986272aab55ed721
+# Source8-md5:	b235668211cf2010d12d2aff81e03008
 Source10:	make-cacerts.sh
 # 0-99 patches for the IcedTea files
 Patch0:		%{name}-x32-ac.patch
@@ -66,7 +70,7 @@ URL:		http://icedtea.classpath.org/wiki/Main_Page
 BuildRequires:	alsa-lib-devel
 BuildRequires:	ant
 BuildRequires:	autoconf
-BuildRequires:	automake
+BuildRequires:	automake >= 1:1.9
 BuildRequires:	bash
 %{?with_cacerts:BuildRequires:	ca-certificates-update}
 BuildRequires:	cups-devel
@@ -85,13 +89,13 @@ BuildRequires:	java-xalan
 BuildRequires:	lcms2-devel
 BuildRequires:	libffi-devel
 BuildRequires:	libjpeg-devel >= 6b
-BuildRequires:	pcsc-lite-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libsctp-devel
 BuildRequires:	libstdc++-static
 BuildRequires:	lsb-release
 %{?with_nss:BuildRequires:	nss-devel >= 1:3.17.2-5}
 BuildRequires:	paxctl
+BuildRequires:	pcsc-lite-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.557
 %{?with_systemtap:BuildRequires:	systemtap-sdt-devel >= 3.2}
@@ -769,6 +773,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/clhsdb
 %attr(755,root,root) %{_bindir}/java
+%{?with_jfr:%attr(755,root,root) %{_bindir}/jfr}
 %attr(755,root,root) %{_bindir}/keytool
 %attr(755,root,root) %{_bindir}/orbd
 %attr(755,root,root) %{_bindir}/pack200
@@ -812,6 +817,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{dstdir}/bin/clhsdb
 %attr(755,root,root) %{jredir}/bin/java
 %attr(755,root,root) %{dstdir}/bin/java
+%{?with_jfr:%attr(755,root,root) %{dstdir}/bin/jfr}
 %attr(755,root,root) %{jredir}/bin/jjs
 %attr(755,root,root) %{dstdir}/bin/jjs
 %attr(755,root,root) %{jredir}/bin/keytool
@@ -834,6 +840,11 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{jredir}/lib/applet
 %{jredir}/lib/cmm
 %{jredir}/lib/ext
+%if %{with jfr}
+%{jredir}/lib/jfr.jar
+%dir %{jredir}/lib/jfr
+%{jredir}/lib/jfr/*.jfc
+%endif
 %dir %{jredir}/lib/%{jre_arch}
 %dir %{jredir}/lib/%{jre_arch}/jli
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/jli/*.so
