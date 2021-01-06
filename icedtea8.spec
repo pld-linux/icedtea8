@@ -56,8 +56,10 @@ Source6:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/langto
 # Source6-md5:	71715fe3fd474afa6b8d4f74dbde4c3b
 Source7:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/hotspot.tar.xz
 # Source7-md5:	dd038e81cd65c1ab1ee73a8fa87f9d2f
-Source8:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/nashorn.tar.xz
-# Source8-md5:	f588a5236077f999670bc045303abfd3
+Source8:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/aarch32.tar.xz
+# Source8-md5:	a00862c2883ff223be4a204379022e4a
+Source9:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/nashorn.tar.xz
+# Source9-md5:	f588a5236077f999670bc045303abfd3
 Source10:	make-cacerts.sh
 # 0-99 patches for the IcedTea files
 Patch0:		%{name}-x32-ac.patch
@@ -66,6 +68,7 @@ Patch1:		%{name}-heimdal.patch
 Patch100:	%{name}-libpath.patch
 Patch101:	%{name}-x32.patch
 Patch102:	openjdk-heimdal.patch
+Patch103:	atomic.patch
 URL:		http://icedtea.classpath.org/wiki/Main_Page
 BuildRequires:	alsa-lib-devel
 BuildRequires:	ant
@@ -87,6 +90,9 @@ BuildRequires:	java-rhino
 BuildRequires:	java-xalan
 %buildrequires_jdk
 BuildRequires:	lcms2-devel
+%ifarch %{arm}
+BuildRequires:	libatomic-devel
+%endif
 BuildRequires:	libffi-devel
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel
@@ -162,6 +168,15 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %endif
 %ifarch aarch64
 %define		jre_arch	aarch64
+%endif
+%ifarch %{arm}
+%define		jre_arch	aarch32
+%endif
+
+%ifarch %{arm}
+%define		jvm_type	client
+%else
+%define		jvm_type	server
 %endif
 
 # to break artificial subpackage dependency loops
@@ -462,6 +477,7 @@ cp -p %{PATCH100} pld-patches
 cp -p %{PATCH101} pld-patches
 %endif
 cp -p %{PATCH102} pld-patches
+cp -p %{PATCH103} pld-patches
 
 # let the build system extract the sources where it wants them
 install -d drops
@@ -471,8 +487,12 @@ ln -s %{SOURCE3} jaxp.tar.xz
 ln -s %{SOURCE4} jaxws.tar.xz
 ln -s %{SOURCE5} jdk.tar.xz
 ln -s %{SOURCE6} langtools.tar.xz
+%ifarch %{arm}
+ln -s %{SOURCE8} hotspot.tar.xz
+%else
 ln -s %{SOURCE7} hotspot.tar.xz
-ln -s %{SOURCE8} nashorn.tar.xz
+%endif
+ln -s %{SOURCE9} nashorn.tar.xz
 
 %build
 # Make sure we have /proc mounted - otherwise idlc will fail later.
@@ -615,7 +635,7 @@ for f in jndi jndi-ldap jndi-cos jndi-rmi jaas jdbc-stdext jdbc-stdext-3.0 \
 done
 
 # some apps (like opera) looks for it in different place
-ln -s server/libjvm.so $RPM_BUILD_ROOT%{jredir}/lib/%{jre_arch}/libjvm.so
+ln -s %{jvm_type}/libjvm.so $RPM_BUILD_ROOT%{jredir}/lib/%{jre_arch}/libjvm.so
 
 %{__rm} $RPM_BUILD_ROOT%{dstdir}/{,jre/}{ASSEMBLY_EXCEPTION,LICENSE,THIRD_PARTY_README}
 
@@ -761,7 +781,7 @@ rm -rf $RPM_BUILD_ROOT
 %{dstdir}/lib/jconsole.jar
 %attr(755,root,root) %{dstdir}/lib/jexec
 %{dstdir}/lib/orb.idl
-%ifnarch x32
+%ifnarch %{arm} x32
 %{dstdir}/lib/sa-jdi.jar
 %endif
 %{dstdir}/lib/tools.jar
@@ -849,12 +869,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{jredir}/lib/%{jre_arch}
 %dir %{jredir}/lib/%{jre_arch}/jli
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/jli/*.so
-%dir %{jredir}/lib/%{jre_arch}/server
-%{jredir}/lib/%{jre_arch}/server/Xusage.txt
+%dir %{jredir}/lib/%{jre_arch}/%{jvm_type}
+%{jredir}/lib/%{jre_arch}/%{jvm_type}/Xusage.txt
 %ifnarch x32
-%{jredir}/lib/%{jre_arch}/server/classes.jsa
+%{jredir}/lib/%{jre_arch}/%{jvm_type}/classes.jsa
 %endif
-%attr(755,root,root) %{jredir}/lib/%{jre_arch}/server/*.so
+%attr(755,root,root) %{jredir}/lib/%{jre_arch}/%{jvm_type}/*.so
 %{jredir}/lib/%{jre_arch}/jvm.cfg
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libattach.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libawt.so
@@ -882,7 +902,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libnet.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libnio.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libnpt.so
-%ifnarch x32
+%ifnarch %{arm} x32
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsaproc.so
 %endif
 %{?with_sunec:%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsunec.so}
