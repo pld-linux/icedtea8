@@ -15,7 +15,6 @@
 %bcond_with	bootstrap	# build a bootstrap version, using icedtea6
 %bcond_without	nss		# don't use NSS
 %bcond_without	cacerts		# don't include the default CA certificates
-%bcond_without	sunec		# enable Sun EC crypt lib
 %bcond_without	systemtap	# build without systemtap
 
 %if %{with bootstrap}
@@ -538,8 +537,7 @@ chmod a+x build-bin/ant
 	--enable-system-kerberos \
 	--enable-system-pcsc \
 	--enable-system-sctp \
-	--%{!?with_nss:dis}%{?with_nss:en}able-nss \
-	--%{!?with_sunec:dis}%{?with_sunec:en}able-sunec
+	--%{!?with_nss:dis}%{?with_nss:en}able-nss
 
 %{__make} extract \
 	SHELL=/bin/bash \
@@ -904,7 +902,7 @@ rm -rf $RPM_BUILD_ROOT
 %ifnarch %{arm} x32
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsaproc.so
 %endif
-%{?with_sunec:%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsunec.so}
+%attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsunec.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libunpack.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libverify.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libzip.so
