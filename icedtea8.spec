@@ -100,7 +100,6 @@ BuildRequires:	libsctp-devel
 BuildRequires:	libstdc++-static
 BuildRequires:	lsb-release
 %{?with_nss:BuildRequires:	nss-devel >= 1:3.17.2-5}
-BuildRequires:	paxctl
 BuildRequires:	pcsc-lite-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.557
