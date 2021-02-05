@@ -103,6 +103,7 @@ BuildRequires:	pcsc-lite-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.557
 %{?with_systemtap:BuildRequires:	systemtap-sdt-devel >= 3.2}
+BuildRequires:	tar >= 1:1.22
 BuildRequires:	unzip
 BuildRequires:	util-linux
 BuildRequires:	xorg-lib-libX11-devel
@@ -118,6 +119,7 @@ BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	xorg-lib-libXtst-devel
 BuildRequires:	xorg-proto-printproto-devel
 BuildRequires:	xorg-proto-xproto-devel
+BuildRequires:	xz
 BuildRequires:	zip
 BuildRequires:	zlib-devel
 Requires:	%{name}-appletviewer = %{version}-%{release}
