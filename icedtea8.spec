@@ -101,7 +101,7 @@ BuildRequires:	lsb-release
 %{?with_nss:BuildRequires:	nss-devel >= 1:3.17.2-5}
 BuildRequires:	pcsc-lite-devel
 BuildRequires:	pkgconfig
-BuildRequires:	rpmbuild(macros) >= 1.557
+BuildRequires:	rpmbuild(macros) >= 1.752
 %{?with_systemtap:BuildRequires:	systemtap-sdt-devel >= 3.2}
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	unzip
@@ -440,9 +440,7 @@ i został zbudowany wyłącznie przy użyciu wolnego oprogramowania.
 Summary:	OpenJDK and GNU Classpath code - sources
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath - kod źródłowy
 Group:		Documentation
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description jdk-sources
 Source code for the OpenJDK development kit and Java standard library.
@@ -455,9 +453,7 @@ biblioteki Javy.
 Summary:	OpenJDK and GNU Classpath code - examples
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath - przykłady
 Group:		Documentation
-%if "%{_rpmversion}" >= "5"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description examples
 Code examples for OpenJDK.
