@@ -273,21 +273,21 @@ Provides:	java1.4
 Provides:	jre = %{_jdkversion}
 Obsoletes:	icedtea6-jre
 Obsoletes:	icedtea7-jre
-Obsoletes:	java(jaas)
-Obsoletes:	java(jaf)
-Obsoletes:	java(jaxp)
-Obsoletes:	java(jce)
-Obsoletes:	java(jdbc-stdext)
-Obsoletes:	java(jdbc-stdext)
-Obsoletes:	java(jmx)
-Obsoletes:	java(jndi)
-Obsoletes:	java(jsse)
+Obsoletes:	jaas
+Obsoletes:	jaf
 Obsoletes:	java-gcj-compat
+Obsoletes:	java-jaxp
+Obsoletes:	java-jdbc-stdext
 Obsoletes:	java-sun-jre
 Obsoletes:	java5-sun-jre
+Obsoletes:	jce
+Obsoletes:	jdbc-stdext
+Obsoletes:	jmx
+Obsoletes:	jndi
+Obsoletes:	jre
+Obsoletes:	jsse
 Obsoletes:	openjdk8-jre
 Obsoletes:	oracle-java7-jre
-Obsoletes:	jre
 
 %description jre
 This package symlinks OpenJDK runtime environment tools provided by
