@@ -463,8 +463,8 @@ Przykłady dla OpenJDK.
 
 %prep
 %setup -qn icedtea-%{version}
-%patch0 -p1
-%patch1 -p1
+%patch -P0 -p1
+%patch -P1 -p1
 
 # patches to applied to the extracted sources
 install -d pld-patches
