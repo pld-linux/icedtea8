@@ -51,12 +51,13 @@ Source10:	make-cacerts.sh
 # 0-99 patches for the IcedTea files
 Patch0:		%{name}-x32-ac.patch
 Patch1:		%{name}-heimdal.patch
+Patch2:		build.patch
 # 100-... patches applied to the extracted sources
 Patch100:	%{name}-libpath.patch
 Patch101:	%{name}-x32.patch
 Patch102:	openjdk-heimdal.patch
 Patch103:	atomic.patch
-Patch104:	build.patch
+Patch104:	%{name}-gcc.patch
 URL:		https://icedtea.classpath.org/wiki/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	ant
@@ -455,6 +456,7 @@ Przykłady dla OpenJDK.
 %setup -qn icedtea-%{version}
 %patch -P0 -p1
 %patch -P1 -p1
+%patch -P2 -p1
 
 # patches to applied to the extracted sources
 install -d pld-patches
