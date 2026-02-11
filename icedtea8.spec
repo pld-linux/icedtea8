@@ -30,35 +30,23 @@
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 # JDK/JRE version, as returned with `java -version`, '_' replaced with '.'
-%define		_jdkversion 1.8.0.292
+%define		_jdkversion 1.8.0.482
 
 Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
 Name:		icedtea8
-Version:	3.19.0
+Version:	3.38.0
 Release:	1
 License:	GPL v2
 Group:		Development/Languages/Java
-Source0:	http://icedtea.wildebeest.org/download/source/icedtea-%{version}.tar.gz
-# Source0-md5:	196e08948558322e7dd5c0b54b6d08a6
-Source1:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/openjdk.tar.xz
-# Source1-md5:	31e8f9aa1359a7bbf28b7c4b5046a472
-Source2:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/corba.tar.xz
-# Source2-md5:	1d7446a502305da6f5340858dd49b76f
-Source3:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxp.tar.xz
-# Source3-md5:	5e77415af4a088bc643456f7e01ae013
-Source4:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jaxws.tar.xz
-# Source4-md5:	e020b567a60b0302bc9da4a4e7245b5e
-Source5:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/jdk.tar.xz
-# Source5-md5:	02ed69e9f862ff30e540296aaab28799
-Source6:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/langtools.tar.xz
-# Source6-md5:	86a49394f091e4ae6bc7eac8e02a2f83
-Source7:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/hotspot.tar.xz
-# Source7-md5:	aaddd1cc1af543542318933d1d47d57e
-Source8:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/aarch32.tar.xz
-# Source8-md5:	8cc9496816d9b752e7dcc64aefd8a385
-Source9:	http://icedtea.wildebeest.org/download/drops/icedtea8/%{version}/nashorn.tar.xz
-# Source9-md5:	0c449d68b6cafcfec6099770f95c6347
+Source0:	https://icedtea.classpath.org/download/source/icedtea-%{version}.tar.gz
+# Source0-md5:	a263c928e80df03c4f2ac36f7835636e
+Source1:	https://icedtea.classpath.org/download/drops/icedtea8/%{version}/openjdk-git.tar.xz
+# Source1-md5:	c0c0b0d09f5b8048b5ab00343667d8ab
+Source2:	https://icedtea.classpath.org/download/drops/icedtea8/%{version}/aarch32-git.tar.xz
+# Source2-md5:	d1a0e50e6a39f10dd0676c305e1dbd8d
+Source3:	https://icedtea.classpath.org/download/drops/icedtea8/%{version}/shenandoah-git.tar.xz
+# Source3-md5:	cb1b396c8d113a8bbf7d3b1725f7b093
 Source10:	make-cacerts.sh
 # 0-99 patches for the IcedTea files
 Patch0:		%{name}-x32-ac.patch
@@ -68,7 +56,8 @@ Patch100:	%{name}-libpath.patch
 Patch101:	%{name}-x32.patch
 Patch102:	openjdk-heimdal.patch
 Patch103:	atomic.patch
-URL:		http://icedtea.classpath.org/wiki/Main_Page
+Patch104:	build.patch
+URL:		https://icedtea.classpath.org/wiki/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	ant
 BuildRequires:	autoconf
@@ -102,6 +91,7 @@ BuildRequires:	lsb-release
 BuildRequires:	pcsc-lite-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.752
+BuildRequires:	rpm-javaprov
 %{?with_systemtap:BuildRequires:	systemtap-sdt-devel >= 3.2}
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	unzip
@@ -184,7 +174,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 The IcedTea project provides a harness to build the source code from
-http://openjdk.java.net/ using Free Software build tools and provides
+https://openjdk.java.net/ using Free Software build tools and provides
 replacements libraries for the binary plugs with code from the GNU
 Classpath project.
 
@@ -194,7 +184,7 @@ runtime environment.
 
 %description -l pl.UTF-8
 Projekt IcedTea daje możliwość kompilacji kodu źródłowego z
-http://openjdk.java.net/ przy użyciu wolnodostępnych narzędzi oraz
+https://openjdk.java.net/ przy użyciu wolnodostępnych narzędzi oraz
 dostarcza zamienniki biblioteczne binarnych wtyczek pochodzące z
 projektu GNU Classpath.
 
@@ -474,21 +464,13 @@ cp -p %{PATCH101} pld-patches
 %endif
 cp -p %{PATCH102} pld-patches
 cp -p %{PATCH103} pld-patches
+cp -p %{PATCH104} pld-patches
 
 # let the build system extract the sources where it wants them
 install -d drops
-ln -s %{SOURCE1} openjdk.tar.xz
-ln -s %{SOURCE2} corba.tar.xz
-ln -s %{SOURCE3} jaxp.tar.xz
-ln -s %{SOURCE4} jaxws.tar.xz
-ln -s %{SOURCE5} jdk.tar.xz
-ln -s %{SOURCE6} langtools.tar.xz
-%ifarch %{arm}
-ln -s %{SOURCE8} hotspot.tar.xz
-%else
-ln -s %{SOURCE7} hotspot.tar.xz
-%endif
-ln -s %{SOURCE9} nashorn.tar.xz
+ln -s %{SOURCE1} openjdk-git.tar.xz
+ln -s %{SOURCE2} aarch32-git.tar.xz
+ln -s %{SOURCE3} shenandoah-git.tar.xz
 
 %build
 # Make sure we have /proc mounted - otherwise idlc will fail later.
@@ -521,8 +503,9 @@ chmod a+x build-bin/ant
 %{__automake}
 
 # NOTE: the weird '--disable-bootstrap' is how it is supposed to be
-# http://icedtea.classpath.org/wiki/CommonIssues#IcedTea7_building_on_systems_with_JDK_5_or_JDK_6
+# https://icedtea.classpath.org/wiki/CommonIssues#IcedTea7_building_on_systems_with_JDK_5_or_JDK_6
 %configure \
+	CFLAGS="-std=gnu99 %{rpmcflags}" \
 	WGET=%{_bindir}/wget \
 %ifarch x32
 	--enable-zero \
@@ -591,6 +574,9 @@ ln -s %{dstreldir} $RPM_BUILD_ROOT%{_jvmdir}/java
 mv $RPM_BUILD_ROOT%{dstdir}/demo $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 mv $RPM_BUILD_ROOT%{dstdir}/sample $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 mv $RPM_BUILD_ROOT%{dstdir}/src.zip $RPM_BUILD_ROOT%{_javasrcdir}/%{name}-jdk.zip
+
+# remove binaries from examples
+rm -r $RPM_BUILD_ROOT%{_examplesdir}/*/demo/jvmti/*/lib
 
 # move manual pages to its place
 mv $RPM_BUILD_ROOT%{dstdir}/man/ja_JP.UTF-8/man1 $RPM_BUILD_ROOT%{_mandir}/ja/man1
