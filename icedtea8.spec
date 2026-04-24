@@ -334,6 +334,7 @@ Summary(pl.UTF-8):	IcedTea7 OpenJDK - środowisko uruchomieniowe - obsługa X11
 Group:		Development/Languages/Java
 Requires:	%{name}-jre-base = %{version}-%{release}
 Requires:	%{name}-jre-base-freetype = %{version}-%{release}
+Recommends:	%{name}-jre-X11 = %{version}-%{release}
 Provides:	jre-base-X11 = %{_jdkversion}
 
 %description jre-base-X11
