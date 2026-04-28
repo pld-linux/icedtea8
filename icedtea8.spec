@@ -113,9 +113,9 @@ BuildRequires:	xorg-proto-xproto-devel
 BuildRequires:	xz
 BuildRequires:	zip
 BuildRequires:	zlib-devel
-Requires:	%{name}-appletviewer = %{version}-%{release}
-Requires:	%{name}-jdk = %{version}-%{release}
-Suggests:	%{name}-jre-X11
+Requires:	%{name}-default-appletviewer = %{version}-%{release}
+Requires:	%{name}-default-jdk = %{version}-%{release}
+Suggests:	%{name}-default-jre-X11 = %{version}-%{release}
 Suggests:	icedtea-web
 Obsoletes:	icedtea6
 Obsoletes:	icedtea7
@@ -193,13 +193,13 @@ To jest meta-pakiet, który, za pośrednictwem zależności, dostarcza
 wszystkie komponenty IcedTea7, w tym środowisko programistyczne
 (OpenJDK) i uruchomieniowe (JRE).
 
-%package jdk
+%package default-jdk
 Summary:	OpenJDK and GNU Classpath code - software development kit
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath - środowisko programistyczne
 Group:		Development/Languages/Java
-Requires:	%{name}-jar = %{version}-%{release}
-Requires:	%{name}-jdk-base = %{version}-%{release}
-Requires:	%{name}-jre = %{version}-%{release}
+Requires:	%{name}-default-jar = %{version}-%{release}
+Requires:	%{name}-default-jre = %{version}-%{release}
+Requires:	%{name}-jdk = %{version}-%{release}
 Provides:	j2sdk = %{_jdkversion}
 Provides:	jdk = %{_jdkversion}
 Obsoletes:	blackdown-java-sdk
@@ -214,38 +214,40 @@ Obsoletes:	openjdk8-jdk
 Obsoletes:	oracle-java7
 Obsoletes:	jdk
 Obsoletes:	kaffe
+Obsoletes:	icedtea8-jdk < 3.38.0-2
 
-%description jdk
+%description default-jdk
 This package symlinks OpenJDK development tools provided by
-%{name}-jdk-base to system-wide directories like %{_bindir}, making
+%{name}-jdk to system-wide directories like %{_bindir}, making
 IcedTea6 default JDK.
 
-%description jdk -l pl.UTF-8
+%description default-jdk -l pl.UTF-8
 Ten pakiet tworzy symboliczne dowiązania do narzędzi programistycznych
-OpenJDK, dostarczanych przez pakiet %{name}-jdk-base, w standardowych
+OpenJDK, dostarczanych przez pakiet %{name}-jdk w standardowych
 systemowych ścieżkach takich jak %{_bindir}, sprawiając tym samym, że
 IcedTea6 staje się domyślnym JDK w systemie.
 
-%package jdk-base
+%package jdk
 Summary:	OpenJDK and GNU Classpath code - software development kit
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath - środowisko programistyczne
 Group:		Development/Languages/Java
-Requires:	%{name}-jre-base = %{version}-%{release}
+Requires:	%{name}-jre = %{version}-%{release}
 Requires:	jpackage-utils >= 0:1.7.5-4
-Recommends:	%{name}-jdk = %{version}-%{release}
+Recommends:	%{name}-default-jdk = %{version}-%{release}
 Provides:	jdk(%{name})
+Obsoletes:	icedtea8-jdk-base < 3.38.0-2
 
-%description jdk-base
+%description jdk
 OpenJDK development tools built using free software only.
 
-%description jdk-base -l pl.UTF-8
+%description jdk -l pl.UTF-8
 OpenJDK skompilowane wyłącznie przy użyciu wolnego oprogramowania.
 
-%package jre
+%package default-jre
 Summary:	OpenJDK and GNU Classpath code - runtime environment
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath - środowisko uruchomieniowe
 Group:		Development/Languages/Java
-Requires:	%{name}-jre-base = %{version}-%{release}
+Requires:	%{name}-jre = %{version}-%{release}
 Provides:	java
 Provides:	java1.4
 Provides:	jre = %{_jdkversion}
@@ -264,40 +266,41 @@ Obsoletes:	jmx
 Obsoletes:	jndi
 Obsoletes:	jre
 Obsoletes:	jsse
+Obsoletes:	icedtea8-jre < 3.38.0-2
 Obsoletes:	openjdk8-jre
 Obsoletes:	oracle-java7-jre
 
-%description jre
+%description default-jre
 This package symlinks OpenJDK runtime environment tools provided by
-%{name}-jre-base to system-wide directories like %{_bindir}, making
+%{name}-jre to system-wide directories like %{_bindir}, making
 IcedTea6 default JRE.
 
-%description jre -l pl.UTF-8
+%description default-jre -l pl.UTF-8
 Ten pakiet tworzy symboliczne dowiązania do środowiska
-uruchomieniowego OpenJDK, dostarczanych przez pakiet %{name}-jre-base,
+uruchomieniowego OpenJDK, dostarczanych przez pakiet %{name}-jre
 w standardowych systemowych ścieżkach takich jak %{_bindir},
 sprawiając tym samym, że IcedTea7 staje się domyślnym JRE w systemie.
 
-%package jre-X11
+%package default-jre-X11
 Summary:	IcedTea7 OpenJDK - runtime environment - X11 support
 Summary(pl.UTF-8):	IcedTea7 OpenJDK - środowisko uruchomieniowe - obsługa X11
 Group:		Development/Languages/Java
-Requires:	%{name}-jre = %{version}-%{release}
-Requires:	%{name}-jre-base-X11 = %{version}-%{release}
+Requires:	%{name}-jre-X11 = %{version}-%{release}
 Obsoletes:	icedtea6-jre-X11
 Obsoletes:	java-sun-jre-X11
+Obsoletes:	icedtea8-jre-X11 < 3.38.0-2
 Obsoletes:	openjdk8-jre-X11
 Obsoletes:	oracle-java7-jre-X11
 
-%description jre-X11
+%description default-jre-X11
 X11 support for OpenJDK runtime environment built using free software
 only.
 
-%description jre-X11 -l pl.UTF-8
+%description default-jre-X11 -l pl.UTF-8
 Biblioteki X11 dla środowiska OpenJDK zbudowany wyłocznie przy uzyciu
 wolnego oprogramowania.
 
-%package jre-base
+%package jre
 Summary:	OpenJDK and GNU Classpath code - runtime environment
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath - środowisko uruchomieniowe
 Group:		Development/Languages/Java
@@ -305,7 +308,7 @@ Requires:	jpackage-utils >= 0:1.7.5-4
 Requires:	nss >= 1:3.13.4
 # Require zoneinfo data provided by java-tzdata subpackage.
 Requires:	java-tzdata
-Recommends:	%{name}-jre = %{version}-%{release}
+Recommends:	%{name}-default-jre = %{version}-%{release}
 Provides:	java(ClassDataVersion) = %{_classdataversion}
 Provides:	java(jaas) = %{version}
 Provides:	java(jaf) = 1.1.1
@@ -318,91 +321,96 @@ Provides:	java(jmx) = 1.4
 Provides:	java(jndi) = %{version}
 Provides:	java(jsse) = %{version}
 Provides:	jre(%{name})
-Provides:	jre-base = %{_jdkversion}
+Obsoletes:	icedtea8-jre-base < 3.38.0-2
 
-%description jre-base
+%description jre
 OpenJDK runtime environment built using free software only.
 
-%description jre-base -l pl.UTF-8
+%description jre -l pl.UTF-8
 Środowisko uruchomieniowe OpenJDK zbudowany wyłącznie przy użyciu
 wolnego oprogramowania.
 
-%package jre-base-X11
+%package jre-X11
 Summary:	IcedTea7 OpenJDK - runtime environment - X11 support
 Summary(pl.UTF-8):	IcedTea7 OpenJDK - środowisko uruchomieniowe - obsługa X11
 Group:		Development/Languages/Java
-Requires:	%{name}-jre-base = %{version}-%{release}
-Requires:	%{name}-jre-base-freetype = %{version}-%{release}
-Recommends:	%{name}-jre-X11 = %{version}-%{release}
+Requires:	%{name}-jre = %{version}-%{release}
+Requires:	%{name}-jre-freetype = %{version}-%{release}
+Recommends:	%{name}-default-jre-X11 = %{version}-%{release}
 Provides:	jre-X11 = %{version}
 Provides:	jre-X11(%{name})
+Obsoletes:	icedtea8-jre-base-X11 < 3.38.0-2
 
-%description jre-base-X11
+%description jre-X11
 X11 support for OpenJDK runtime environment built using free software
 only.
 
-%description jre-base-X11 -l pl.UTF-8
+%description jre-X11 -l pl.UTF-8
 Biblioteki X11 dla środowiska OpenJDK zbudowany wyłocznie przy uzyciu
 wolnego oprogramowania.
 
-%package jre-base-alsa
+%package jre-alsa
 Summary:	IcedTea7 OpenJDK - runtime environment - ALSA support
 Summary(pl.UTF-8):	IcedTea7 OpenJDK - środowisko uruchomieniowe - obsługa ALSA
 Group:		Development/Languages/Java
-Requires:	%{name}-jre-base = %{version}-%{release}
+Requires:	%{name}-jre = %{version}-%{release}
+Obsoletes:	icedtea8-jre-base-alsa < 3.38.0-2
 
-%description jre-base-alsa
+%description jre-alsa
 ALSA sound support for OpenJDK runtime environment build using free
 software only.
 
-%description jre-base-alsa -l pl.UTF-8
+%description jre-alsa -l pl.UTF-8
 Biblioteki ALSA rozszerzające środowisko OpenJDK o obsługę dźwięku
 zbudowane przy uzyciu wyłącznie wolnego oprogramowania.
 
-%package jre-base-freetype
+%package jre-freetype
 Summary:	IcedTea7 OpenJDK - runtime environment - font support
 Summary(pl.UTF-8):	IcedTea7 OpenJDK - środowisko uruchomieniowe - obsługa fontów
 Group:		Development/Languages/Java
-Requires:	%{name}-jre-base = %{version}-%{release}
+Requires:	%{name}-jre = %{version}-%{release}
+Obsoletes:	icedtea8-jre-base-freetype < 3.38.0-2
 
-%description jre-base-freetype
+%description jre-freetype
 Font handling library for OpenJDK runtime environment built using free
 software only.
 
-%description jre-base-freetype -l pl.UTF-8
+%description jre-freetype -l pl.UTF-8
 Biblioteki obsługi czcionek dla OpenJDK zbudowane wyłącznie przy
 użyciu wolnego oprogramowania.
 
-%package jre-base-gtk
+%package jre-gtk
 Summary:	IcedTea7 OpenJDK - runtime environment - GTK support
 Summary(pl.UTF-8):	IcedTea7 OpenJDK - środowisko uruchomieniowe - obsługa GTK
 Group:		Development/Languages/Java
-Requires:	%{name}-jre-base = %{version}-%{release}
+Requires:	%{name}-jre = %{version}-%{release}
+Obsoletes:	icedtea8-jre-base-gtk < 3.38.0-2
 
-%description jre-base-gtk
+%description jre-gtk
 GTK support for OpenJDK runtime environment.
 
-%description jre-base-gtk -l pl.UTF-8
+%description jre-gtk -l pl.UTF-8
 Biblioteki GTK dla OpenJDK.
 
-%package jar
+%package default-jar
 Summary:	OpenJDK and GNU Classpath code - JAR tool
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath - narzędzie JAR
 Group:		Development/Languages/Java
-Requires:	%{name}-jdk-base = %{version}-%{release}
+Requires:	%{name}-jdk = %{version}-%{release}
 Provides:	jar
 Obsoletes:	fastjar
 Obsoletes:	icedtea6-jar
 Obsoletes:	icedtea7-jar
 Obsoletes:	openjdk8-jar
 Obsoletes:	jar
+Obsoletes:	icedtea8-jar < 9.0.4.12-5
 
-%description jar
+%description default-jar
 JAR tool from OpenJDK built using free software only.
 
 JAR is an archiver used to merge Java classes into a single library.
 
-%description jar -l pl.UTF-8
+%description default-jar -l pl.UTF-8
 Narzędzie jar z OpenJDK zbudowane przy uzyciu wyłącznie wolnego
 oprogramowania.
 
@@ -410,22 +418,23 @@ JAR jest narzędziem pozwalającym wykonywać podstawowe operacje na
 archiwach javy .jar takie jak na przykład tworzenie lub rozpakowywanie
 archiwów.
 
-%package appletviewer
+%package default-appletviewer
 Summary:	OpenJDK and GNU Classpath code - appletviewer tool
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath - narzędzie appletviewer
 Group:		Development/Languages/Java
-Requires:	%{name}-jdk-base = %{version}-%{release}
+Requires:	%{name}-jdk = %{version}-%{release}
 Requires:	%{name}-jre-X11 = %{version}-%{release}
 Obsoletes:	icedtea6-appletviewer
 Obsoletes:	icedtea7-appletviewer
 Obsoletes:	java-sun-appletviewer
+Obsoletes:	icedtea8-appletviewer < 9.0.4.12-5
 Obsoletes:	openjdk8-appletviewer
 Obsoletes:	oracle-java7-appletviewer
 
-%description appletviewer
+%description default-appletviewer
 Appletviewer from OpenJDK build using free software only.
 
-%description appletviewer -l pl.UTF-8
+%description default-appletviewer -l pl.UTF-8
 Appletviewer pozwala uruchamiać aplety javy niezależnie od
 przeglądarki www. Ten appletviewer pochodzi z zestawu narzędzi OpenJDK
 i został zbudowany wyłącznie przy użyciu wolnego oprogramowania.
@@ -634,7 +643,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog HACKING NEWS README
 
-%files jdk
+%files default-jdk
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/extcheck
 %attr(755,root,root) %{_bindir}/idlj
@@ -722,7 +731,7 @@ rm -rf $RPM_BUILD_ROOT
 %lang(ja) %{_mandir}/ja/man1/wsimport.1*
 %lang(ja) %{_mandir}/ja/man1/xjc.1*
 
-%files jdk-base
+%files jdk
 %defattr(644,root,root,755)
 %doc openjdk.build/images/j2sdk-image/THIRD_PARTY_README
 %doc openjdk.build/images/j2sdk-image/ASSEMBLY_EXCEPTION
@@ -776,7 +785,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{dstdir}/lib/%{jre_arch}/jli/*.so
 %{?with_systemtap:%{dstdir}/tapset}
 
-%files jre
+%files default-jre
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/clhsdb
 %attr(755,root,root) %{_bindir}/java
@@ -809,7 +818,7 @@ rm -rf $RPM_BUILD_ROOT
 %lang(ja) %{_mandir}/ja/man1/unpack200.1*
 %{_jvmdir}/java
 
-%files jre-base
+%files jre
 %defattr(644,root,root,755)
 %doc openjdk.build/images/j2sdk-image/THIRD_PARTY_README
 %doc openjdk.build/images/j2sdk-image/ASSEMBLY_EXCEPTION
@@ -927,14 +936,14 @@ rm -rf $RPM_BUILD_ROOT
 %{jredir}/lib/sound.properties
 %{jvmjardir}
 
-%files jre-X11
+%files default-jre-X11
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/hsdb
 %attr(755,root,root) %{_bindir}/policytool
 %{_mandir}/man1/policytool.1*
 %lang(ja) %{_mandir}/ja/man1/policytool.1*
 
-%files jre-base-X11
+%files jre-X11
 %defattr(644,root,root,755)
 %attr(755,root,root) %{dstdir}/bin/hsdb
 %attr(755,root,root) %{jredir}/bin/policytool
@@ -944,24 +953,24 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjawt.so
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libsplashscreen.so
 
-%files jre-base-alsa
+%files jre-alsa
 %defattr(644,root,root,755)
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libjsoundalsa.so
 
-%files jre-base-freetype
+%files jre-freetype
 %defattr(644,root,root,755)
 %attr(755,root,root) %{jredir}/lib/%{jre_arch}/libfontmanager.so
 
-%files jre-base-gtk
+%files jre-gtk
 %defattr(644,root,root,755)
 
-%files jar
+%files default-jar
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/jar
 %{_mandir}/man1/jar.1*
 %lang(ja) %{_mandir}/ja/man1/jar.1*
 
-%files appletviewer
+%files default-appletviewer
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/appletviewer
 %{_mandir}/man1/appletviewer.1*
