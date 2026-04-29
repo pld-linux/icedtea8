@@ -66,7 +66,6 @@ BuildRequires:	automake >= 1:1.9
 BuildRequires:	bash
 %{?with_cacerts:BuildRequires:	ca-certificates-update}
 BuildRequires:	cups-devel
-BuildRequires:	/usr/bin/jar
 BuildRequires:	fontconfig-devel
 BuildRequires:	freetype-devel >= 2.3
 BuildRequires:	gawk
