@@ -30,23 +30,23 @@
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 # JDK/JRE version, as returned with `java -version`, '_' replaced with '.'
-%define		_jdkversion 1.8.0.482
+%define		_jdkversion 1.8.0.492
 
 Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
 Name:		icedtea8
-Version:	3.38.0
-Release:	2
+Version:	3.39.0
+Release:	1
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	https://icedtea.classpath.org/download/source/icedtea-%{version}.tar.gz
-# Source0-md5:	a263c928e80df03c4f2ac36f7835636e
+# Source0-md5:	5a047db3f83dbe67b5302ffbd49410d6
 Source1:	https://icedtea.classpath.org/download/drops/icedtea8/%{version}/openjdk-git.tar.xz
-# Source1-md5:	c0c0b0d09f5b8048b5ab00343667d8ab
+# Source1-md5:	7b570e774f24918b38e2bfc4cf6aabb6
 Source2:	https://icedtea.classpath.org/download/drops/icedtea8/%{version}/aarch32-git.tar.xz
-# Source2-md5:	d1a0e50e6a39f10dd0676c305e1dbd8d
+# Source2-md5:	912214457abe7c7e21cdc285394f6d86
 Source3:	https://icedtea.classpath.org/download/drops/icedtea8/%{version}/shenandoah-git.tar.xz
-# Source3-md5:	cb1b396c8d113a8bbf7d3b1725f7b093
+# Source3-md5:	6aefd1cec2888e645df62d435a923356
 Source10:	make-cacerts.sh
 # 0-99 patches for the IcedTea files
 Patch0:		%{name}-x32-ac.patch
@@ -57,7 +57,6 @@ Patch100:	%{name}-libpath.patch
 Patch101:	%{name}-x32.patch
 Patch102:	openjdk-heimdal.patch
 Patch103:	atomic.patch
-Patch104:	%{name}-gcc.patch
 URL:		https://icedtea.classpath.org/wiki/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	ant
@@ -74,8 +73,6 @@ BuildRequires:	glib2-devel
 BuildRequires:	glibc-misc
 BuildRequires:	gtk+2-devel
 BuildRequires:	heimdal-devel
-BuildRequires:	java-rhino
-BuildRequires:	java-xalan
 %buildrequires_jdk
 BuildRequires:	lcms2-devel
 %ifarch %{arm}
@@ -477,7 +474,6 @@ cp -p %{PATCH101} pld-patches
 %endif
 cp -p %{PATCH102} pld-patches
 cp -p %{PATCH103} pld-patches
-cp -p %{PATCH104} pld-patches
 
 # let the build system extract the sources where it wants them
 install -d drops
