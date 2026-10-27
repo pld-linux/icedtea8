@@ -1,0 +1,14 @@
+IcedTea 3.40.1 imports OpenJDK 8u504-b01 but labels it 8u512, the update that
+carries the October 2026 security fixes it does not have
+
+--- icedtea-3.40.1/acinclude.m4.orig	2026-08-29 22:46:27.405752868 +0200
++++ icedtea-3.40.1/acinclude.m4	2026-10-27 15:19:54.422508387 +0100
+@@ -1966,7 +1966,7 @@
+   dnl (e.g. 1.8.0 = 8, 1.7.0 = 7, etc.)
+   JAVA_SPEC_VER=8
+   JAVA_VENDOR=openjdk
+-  JDK_UPDATE_VERSION=512
++  JDK_UPDATE_VERSION=504
+   BUILD_VERSION=b01
+   MILESTONE=fcs
+   if test "x${MILESTONE}" = "xfcs"; then

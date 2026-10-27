@@ -30,40 +30,43 @@
 # class data version seen with file(1) that this jvm is able to load
 %define		_classdataversion 52.0
 # JDK/JRE version, as returned with `java -version`, '_' replaced with '.'
-%define		_jdkversion 1.8.0.492
+%define		_jdkversion 1.8.0.504
 
 Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
 Name:		icedtea8
-Version:	3.39.0
+Version:	3.40.1
 Release:	1
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	https://icedtea.classpath.org/download/source/icedtea-%{version}.tar.gz
-# Source0-md5:	5a047db3f83dbe67b5302ffbd49410d6
+# Source0-md5:	291817dc1ed0d4d044dd3be3d4e4ff49
 Source1:	https://icedtea.classpath.org/download/drops/icedtea8/%{version}/openjdk-git.tar.xz
-# Source1-md5:	7b570e774f24918b38e2bfc4cf6aabb6
+# Source1-md5:	6d1e4a5986bad37e8b17356f5c5164ef
 Source2:	https://icedtea.classpath.org/download/drops/icedtea8/%{version}/aarch32-git.tar.xz
-# Source2-md5:	912214457abe7c7e21cdc285394f6d86
+# Source2-md5:	dc9e558696ae894cd653d3510148c59a
 Source3:	https://icedtea.classpath.org/download/drops/icedtea8/%{version}/shenandoah-git.tar.xz
-# Source3-md5:	6aefd1cec2888e645df62d435a923356
+# Source3-md5:	b6913fb44d56e78b88bdbc17e5ce755b
 Source10:	make-cacerts.sh
 # 0-99 patches for the IcedTea files
 Patch0:		%{name}-x32-ac.patch
 Patch1:		%{name}-heimdal.patch
 Patch2:		build.patch
+Patch3:		%{name}-update-version.patch
 # 100-... patches applied to the extracted sources
 Patch100:	%{name}-libpath.patch
 Patch101:	%{name}-x32.patch
 Patch102:	openjdk-heimdal.patch
 Patch103:	atomic.patch
+Patch104:	openjdk-CVE-2026-91403.patch
 URL:		https://icedtea.classpath.org/wiki/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	ant
 BuildRequires:	autoconf
 BuildRequires:	automake >= 1:1.9
 BuildRequires:	bash
-%{?with_cacerts:BuildRequires:	ca-certificates-update}
+# cacerts is generated from it; 20260816-1 drops the compromised eMudhra roots (CVE-2026-91403)
+%{?with_cacerts:BuildRequires:	ca-certificates-update >= 20260816-1}
 BuildRequires:	cups-devel
 BuildRequires:	fontconfig-devel
 BuildRequires:	freetype-devel >= 2.3
@@ -465,6 +468,7 @@ Przykłady dla OpenJDK.
 %patch -P0 -p1
 %patch -P1 -p1
 %patch -P2 -p1
+%patch -P3 -p1
 
 # patches to applied to the extracted sources
 install -d pld-patches
@@ -474,6 +478,7 @@ cp -p %{PATCH101} pld-patches
 %endif
 cp -p %{PATCH102} pld-patches
 cp -p %{PATCH103} pld-patches
+cp -p %{PATCH104} pld-patches
 
 # let the build system extract the sources where it wants them
 install -d drops
@@ -513,6 +518,8 @@ chmod a+x build-bin/ant
 
 # NOTE: the weird '--disable-bootstrap' is how it is supposed to be
 # https://icedtea.classpath.org/wiki/CommonIssues#IcedTea7_building_on_systems_with_JDK_5_or_JDK_6
+# --with-cacerts-file=no: generate cacerts from the OpenJDK sources instead of
+# copying the one from the boot JDK
 %configure \
 	CFLAGS="-std=gnu99 %{rpmcflags}" \
 	WGET=%{_bindir}/wget \
@@ -522,6 +529,7 @@ chmod a+x build-bin/ant
 	--disable-downloading \
 	--with-jdk-home=%{java_home} \
 	--disable-bootstrap \
+	--with-cacerts-file=no \
 	--enable-improved-font-rendering \
 	%{__enable_disable jfr} \
 	--enable-system-kerberos \
