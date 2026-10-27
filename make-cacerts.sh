@@ -25,6 +25,9 @@
 # USA.
 #
 
+# the spec runs this script through sh, which ignores -e on the #! line
+set -e
+
 verbose=0
 DESTDIR=
 while [ $# -gt 0 ];

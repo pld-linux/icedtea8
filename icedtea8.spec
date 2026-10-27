@@ -36,7 +36,7 @@ Summary:	OpenJDK and GNU Classpath code
 Summary(pl.UTF-8):	Kod OpenJDK i GNU Classpath
 Name:		icedtea8
 Version:	3.40.1
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Development/Languages/Java
 Source0:	https://icedtea.classpath.org/download/source/icedtea-%{version}.tar.gz
@@ -59,6 +59,7 @@ Patch101:	%{name}-x32.patch
 Patch102:	openjdk-heimdal.patch
 Patch103:	atomic.patch
 Patch104:	openjdk-CVE-2026-91403.patch
+Patch105:	openjdk-CVE-2026-91403-blacklist.patch
 URL:		https://icedtea.classpath.org/wiki/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	ant
@@ -479,6 +480,7 @@ cp -p %{PATCH101} pld-patches
 cp -p %{PATCH102} pld-patches
 cp -p %{PATCH103} pld-patches
 cp -p %{PATCH104} pld-patches
+cp -p %{PATCH105} pld-patches
 
 # let the build system extract the sources where it wants them
 install -d drops
